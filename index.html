@@ -1,191 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Dashboard | Pizza Place Sales</title>
-        <link rel="stylesheet" href="style.css" />
-        <link 
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-        <!-- Google chart link -->
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    </head>
-    <body>
-        <div class="sidebar">
-            <div class="logo"></div>
-            <ul class="menu">
-                <li class="active">
-                    <a href="#">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-user"></i>
-                        <span>Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Statistics</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-briefcase"></i>
-                        <span>Perfrom</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-question-circle"></i>
-                        <span>FAQ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-star"></i>
-                        <span>Testimonials</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-cog"></i>
-                        <span>Setting</span>
-                    </a>
-                </li>
-                <li class="logout">
-                    <a href="#">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="main--content">
-            <div class="header--wrapper">
-                <div class="header--title">
-                    <span>Primary</span>
-                    <h2>Dashboard</h2>
-                </div>
-                <div class="user--info">
-                    <div class="search--box">
-                    <i class="fa-solid 
-                    fa-search"></i>
-                    <input type="text"
-                    placeholder="Search"/>
-                </div>
-                <img src="C:\Users\muklis\Pictures\DASHBOARD PIZZA\img" alt="">
-                </div>
-            </div>
-
-            <div class="card--container">
-                <h3 class="main--title">Total Orders</h3>
-                <div class="card--wrapper">
-                    <div class="payment--card
-                    light-red">
-                        <div class="card--header">
-                            <div class="amount">
-                                <span class="title">
-                                January to December 2015</span>
-                                <sapn class="amount--value">Total Revenue</sapn>
-                            </div>
-                            <i class="fas fa-dollar-sign icon
-                            dark-red"></i>
-                        </div>
-                        <span class="card-detail">817.860,05</span>
-                    </div>
-
-                    <div class="payment--card
-                    light-purple">
-                        <div class="card--header">
-                            <div class="amount">
-                                <span class="title">
-                                January to December 2015</span>
-                                <sapn class="amount--value">Total Orders</sapn>
-                            </div>
-                            <i class="fas fa-list icon
-                            dark-purple"></i>
-                        </div>
-                        <span class="card-detail">21.350</span>
-                    </div>
-
-                    <div class="payment--card
-                    light-green">
-                        <div class="card--header">
-                            <div class="amount">
-                                <span class="title">
-                                January to December 2015</span>
-                                <sapn class="amount--value">Best Seller</sapn>
-                            </div>
-                            <i class="fas fa-user icon
-                            dark-green"></i>
-                        </div>
-                        <span class="card-detail">The Classic Deluxe Pizza</span>
-                    </div>
-
-                    <div class="payment--card
-                    light-blue">
-                        <div class="card--header">
-                            <div class="amount">
-                                <span class="title">
-                                January to December 2015</span>
-                                <sapn class="amount--value">Best Time</sapn>
-                            </div>
-                            <i class="fas fa-check icon
-                            dark-blue"></i>
-                        </div>
-                        <span class="card-detail">Lunch</span>
-                    </div>
-                </div>
-            </div>
+<head>
+  <title>Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="chart.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row content">
         
-            <div class="tabular--wrapper">
-                <h3 class="main--title">Order 
-                Details</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Pizza Id</th>
-                                <th>Quantity</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Size</th>
-                                <th>Prize</th>
-                            </tr>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Hawaiian m</td>
-                                    <td>1</td>
-                                    <td>01/01/2015</td>
-                                    <td>11:38:36</td>
-                                    <td>M</td>
-                                    <td>$13.35</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="7">Total Orders: 21.350</td>
-                                </tr>
-                            </tfoot>
-                        </thead>
-                    </table>
+          <div class="col-sm-12">
+            <br>
+            <div class="well" style="text-align: center;">
+              <h3>DASHBOARD PIZZA PLACE SALES</h3>
+            </div>
+            <div id="filterSection">
+              <input type="date" id="dateInput">
+              <button id="filterButton">Filter</button>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="well">
+                  <h4>Total Revenue</h4>
+                  <p id="totalRevenue"></p> 
                 </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h4>Total Pizzas Sold</h4>
+                  <p id="totalPizzasSold"></p> 
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h4>Total Orders</h4>
+                  <p id="totalOrders"></p> 
+                </div>
+              </div>
             </div>
 
-            <!-- Add Charts -->
-            <div class="graphBox">
-                <div id="line_top_x"></div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="well">
+                  <h5>Hourly Trends for Total Orders</h5> 
+                  <canvas id="ordersLineChartPerHour" style="width: 100%" height="300"></canvas> 
+                </div>
+                <div class="well">
+                  <h5>Monthly Trends for Total Orders</h5> 
+                  <canvas id="ordersLineChartPerMonth" style="width: 100%" height="300"></canvas> 
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="well">
+                  <h5>Total Orders by Order Day</h5>
+                  <canvas id="ordersChartPerDay" style="width: 100%" height="300"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="well">
+                  <h5>Total Pizza Sold by Pizza Category</h5> 
+                  <canvas id="pizzaSoldByCategoryChart" style="width: 100%" height="300"></canvas>
+                </div>
+              </div>
             </div>
 
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="well">
+                  <h5>% Sales by Pizza Category</h5> 
+                  <canvas id="salesDonutChartPerCategory" style="width: 100%"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="well">
+                  <h5>% Sales by Pizza Size</h5> 
+                  <canvas id="salesDonutChartPerSize" style="width: 100%"></canvas> 
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Top 5 Pizzas by Revenue</h5> 
+                  <canvas id="topPizzaByRevenue" style="width: 100%"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Top 5 Pizzas by Quantity</h5> 
+                  <canvas id="topPizzaByQuantity" style="width: 100%"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Top 5 Pizzas by Orders</h5> 
+                  <canvas id="topPizzaByOrders" style="width: 100%"></canvas>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Bottom 5 Pizzas by Revenue</h5> 
+                  <canvas id="botPizzaByRevenue" style="width: 100%"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Bottom 5 Pizzas by Quantity</h5> 
+                  <canvas id="botPizzaByQuantity" style="width: 100%"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Bottom 5 Pizzas by Orders</h5> 
+                  <canvas id="botPizzaByOrders" style="width: 100%"></canvas>
+                </div>
+              </div>
+            </div>
+            
+          </div>
         </div>
-
-        <script src="./chart.js"></script>
-    </body>
+      </div>      
+</body>
 </html>
