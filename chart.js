@@ -22,32 +22,29 @@ $(document).ready(function(){
 
 $(document).ready(function(){
   $.getJSON('pizza.json', function(data) {
-    var uniqueOrderIds = {}; // Objek untuk melacak order_id yang unik
+    var uniqueOrderIds = {}; 
     $.each(data, function(index, item) {
-      uniqueOrderIds[item.order_id] = true; // Setiap order_id ditambahkan ke objek jika belum ada
+      uniqueOrderIds[item.order_id] = true; 
     });
-    var totalOrders = Object.keys(uniqueOrderIds).length; // Menghitung panjang objek untuk mendapatkan jumlah order_id yang unik
+    var totalOrders = Object.keys(uniqueOrderIds).length; 
     $('#totalOrders').text(totalOrders);
   });
 });
 
 $(document).ready(function(){
   $.getJSON('pizza.json', function(data) {
-    var ordersPerDay = {}; // Objek untuk melacak jumlah order unik per hari
+    var ordersPerDay = {}; 
 
-    // Menghitung jumlah order unik per hari
     $.each(data, function(index, item) {
       var day = item.day;
       if (!ordersPerDay[day]) {
         ordersPerDay[day] = {};
       }
-      ordersPerDay[day][item.order_id] = true; // Menggunakan objek untuk memastikan order_id unik
+      ordersPerDay[day][item.order_id] = true; 
     });
 
-    // Membuat array hari dalam urutan yang diinginkan
     var daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
-    // Mengambil label (tanggal) dan data (jumlah order) dari objek ordersPerDay
     var labels = daysOfWeek.map(function(day) {
       return ordersPerDay.hasOwnProperty(day) ? day : ''; // Memeriksa apakah ada data untuk hari tersebut
     });
@@ -55,7 +52,6 @@ $(document).ready(function(){
       return label !== '' ? Object.keys(ordersPerDay[label]).length : 0; // Menghitung jumlah order unik per tanggal
     });
 
-    // Membuat diagram batang menggunakan Chart.js
     var ctx = document.getElementById('ordersChartPerDay').getContext('2d');
     var chart = new Chart(ctx, {
       type: 'bar',
@@ -84,26 +80,23 @@ $(document).ready(function(){
 
 $(document).ready(function(){
   $.getJSON('pizza.json', function(data) {
-    var ordersPerHour = {}; // Objek untuk melacak jumlah order unik per jam
+    var ordersPerHour = {}; 
 
-    // Menghitung jumlah order unik per jam
     $.each(data, function(index, item) {
       var hour = item.hours;
       if (!ordersPerHour[hour]) {
         ordersPerHour[hour] = {};
       }
-      ordersPerHour[hour][item.order_id] = true; // Menggunakan objek untuk memastikan order_id unik
+      ordersPerHour[hour][item.order_id] = true; 
     });
 
-    // Mengambil label (jam) dan data (jumlah order) dari objek ordersPerHour
     var labels = [];
     var data = [];
     for (var hour = 0; hour < 24; hour++) {
-      labels.push(hour + ':00'); // Membuat label jam
+      labels.push(hour + ':00'); 
       data.push(ordersPerHour[hour] ? Object.keys(ordersPerHour[hour]).length : 0); // Menghitung jumlah order unik per jam
     }
 
-    // Membuat diagram garis menggunakan Chart.js
     var ctx = document.getElementById('ordersLineChartPerHour').getContext('2d');
     var chart = new Chart(ctx, {
       type: 'line',
