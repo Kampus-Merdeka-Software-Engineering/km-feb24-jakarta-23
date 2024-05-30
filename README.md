@@ -28,6 +28,7 @@ This is a web-based dashboard for monitoring the sales data of a pizza place. It
 
 ## Screenshots
 ![Dashboard Screenshot](/path/to/cc202429.png)
+![alt text](https://github.com/Kampus-Merdeka-Software-Engineering/km-feb24-jakarta-23/blob/main/SampleFolder/202429.jpg.jpg?raw=true) 
 
 ## Dependencies
 - [Font Awesome](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css)
