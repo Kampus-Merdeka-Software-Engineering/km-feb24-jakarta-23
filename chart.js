@@ -340,16 +340,6 @@ $.getJSON('pizza.json', function(data) {
   });
 });
   
-  // JavaScript for orders.html page
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      var tableBody = $('#orderTable tbody');
-      $.each(data, function(index, item) {
-        tableBody.append('<tr><td>' + item.order_id + '</td><td>' + item.date + '</td><td>' + item.time + '</td><td>' + item.name + '</td><td>' + item.quantity + '</td><td>$' + item.total_price + '</td></tr>');
-      });
-    });
-  });
-
   $(document).ready(function(){
     $.getJSON('pizza.json', function(data) {
       // Menghitung total penjualan untuk setiap jenis pizza
@@ -739,3 +729,91 @@ $.getJSON('pizza.json', function(data) {
       });
     });
   });
+
+  $(document).ready(function(){
+    var currentPage = 1;
+    var itemsPerPage = 10;
+    var jsonData; 
+    var uniqueItems; 
+
+    function loadData() {
+        $.getJSON('pizza.json', function(data) {
+            jsonData = data;
+            uniqueItems = getUniqueItems(jsonData);
+            renderTable(uniqueItems);
+        });
+    }
+
+    function getUniqueItems(data) {
+        var uniqueItems = {};
+        data.forEach(function(item) {
+            var key = item.name + item.size + item.price;
+            if (!uniqueItems[key]) {
+                uniqueItems[key] = item;
+            }
+        });
+        return Object.values(uniqueItems);
+    }
+
+  function renderTable(data) {
+  data.sort(function(a, b) {
+      var nameA = a.name.toUpperCase(); 
+      var nameB = b.name.toUpperCase(); 
+      if (nameA < nameB) {
+          return -1;
+      }
+      if (nameA > nameB) {
+          return 1;
+      }
+      return 0;
+  });
+
+  var startIndex = (currentPage - 1) * itemsPerPage;
+  var endIndex = startIndex + itemsPerPage;
+  var tableBody = $('#tables tbody');
+  tableBody.empty(); 
+
+  for (var i = startIndex; i < endIndex && i < data.length; i++) {
+      var item = data[i];
+      tableBody.append('<tr><td>' + (i + 1) + '</td><td>' + item.name + '</td><td>' + item.size + '</td><td>$' + item.price + '</td><tr>');
+  }
+
+  renderPagination(data.length);
+}
+
+    function renderPagination(totalItems) {
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+        var paginationList = $('.pagination');
+        paginationList.empty(); 
+
+        paginationList.append('<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="prevPage()">Previous</a></li>');
+        
+        for (var i = 1; i <= totalPages; i++) {
+            paginationList.append('<li class="page-item ' + (currentPage === i ? 'active' : '') + '"><a class="page-link" href="#" onclick="changePage(' + i + ')">' + i + '</a></li>');
+        }
+
+        paginationList.append('<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>');
+    }
+
+    window.changePage = function(page) {
+        currentPage = page;
+        renderTable(uniqueItems);
+    }
+
+    window.prevPage = function() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderTable(uniqueItems);
+        }
+    }
+
+    window.nextPage = function() {
+        var totalPages = Math.ceil(uniqueItems.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderTable(uniqueItems);
+        }
+    }
+
+    loadData();
+});
