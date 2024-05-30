@@ -12,33 +12,38 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
     <div class="container-fluid">
         <div class="row content">
-        
-          <div class="col-sm-12">
-            <br>
-            <div class="well" style="text-align: center;">
-              <h3>DASHBOARD PIZZA PLACE SALES</h3>
-            </div>
+          <div class="col-sm-3 sidebar">
+            <h2>Pizza Place Sales</h2>
+            <ul class="nav nav-pills nav-stacked">
+              <li class="active"><a href="index.html">Dashboard</a></li>
+              <li><a href="tables.html">Tables</a></li>
+            </ul>
+          </div>
+          <br>
+
+          <div class="col-sm-9">
             <div id="filterSection">
               <input type="date" id="dateInput">
               <button id="filterButton">Filter</button>
             </div>
             <br>
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <div class="well">
                   <h4>Total Revenue</h4>
                   <p id="totalRevenue"></p> 
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <div class="well">
                   <h4>Total Pizzas Sold</h4>
                   <p id="totalPizzasSold"></p> 
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <div class="well">
                   <h4>Total Orders</h4>
                   <p id="totalOrders"></p> 
@@ -47,90 +52,44 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-8">
                 <div class="well">
                   <h5>Hourly Trends for Total Orders</h5> 
-                  <canvas id="ordersLineChartPerHour" style="width: 100%" height="300"></canvas> 
+                  <canvas id="ordersLineChartPerHour" width="400" height="100"></canvas> 
                 </div>
                 <div class="well">
                   <h5>Monthly Trends for Total Orders</h5> 
-                  <canvas id="ordersLineChartPerMonth" style="width: 100%" height="300"></canvas> 
+                  <canvas id="ordersLineChartPerMonth" width="400" height="100"></canvas> 
                 </div>
               </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <div class="well">
                   <h5>Total Orders by Order Day</h5>
-                  <canvas id="ordersChartPerDay" style="width: 100%" height="300"></canvas> 
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="well">
-                  <h5>Total Pizza Sold by Pizza Category</h5> 
-                  <canvas id="pizzaSoldByCategoryChart" style="width: 100%" height="300"></canvas>
+                  <canvas id="ordersChartPerDay" width="400" height="570"></canvas> 
                 </div>
               </div>
             </div>
-
+            
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <div class="well">
                   <h5>% Sales by Pizza Category</h5> 
-                  <canvas id="salesDonutChartPerCategory" style="width: 100%"></canvas> 
+                  <canvas id="salesDonutChartPerCategory" width="400" height="200"></canvas> 
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <div class="well">
                   <h5>% Sales by Pizza Size</h5> 
-                  <canvas id="salesDonutChartPerSize" style="width: 100%"></canvas> 
+                  <canvas id="salesDonutChartPerSize" width="400" height="200"></canvas> 
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="well">
+                  <h5>Total Pizza Sold by Pizza Category</h5> 
+                  <canvas id="pizzaSoldByCategoryChart" width="400" height="400"></canvas>
                 </div>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="well">
-                  <h5>Top 5 Pizzas by Revenue</h5> 
-                  <canvas id="topPizzaByRevenue" style="width: 100%"></canvas> 
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="well">
-                  <h5>Top 5 Pizzas by Quantity</h5> 
-                  <canvas id="topPizzaByQuantity" style="width: 100%"></canvas> 
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="well">
-                  <h5>Top 5 Pizzas by Orders</h5> 
-                  <canvas id="topPizzaByOrders" style="width: 100%"></canvas>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="well">
-                  <h5>Bottom 5 Pizzas by Revenue</h5> 
-                  <canvas id="botPizzaByRevenue" style="width: 100%"></canvas> 
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="well">
-                  <h5>Bottom 5 Pizzas by Quantity</h5> 
-                  <canvas id="botPizzaByQuantity" style="width: 100%"></canvas> 
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="well">
-                  <h5>Bottom 5 Pizzas by Orders</h5> 
-                  <canvas id="botPizzaByOrders" style="width: 100%"></canvas>
-                </div>
-              </div>
-            </div>
-            
           </div>
         </div>
       </div>      
