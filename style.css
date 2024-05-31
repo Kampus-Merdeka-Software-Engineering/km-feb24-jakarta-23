@@ -1,75 +1,122 @@
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
 body {
-    font-family: Arial, sans-serif;
-  }
-  
-  body {
-    background-color: #f8f9fa;
-  }
-  
-  .well {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px; 
-  }
-  
-  h4, h5 {
-    color: #007bff;
-  }
-  
-  #dateInput {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  #filterButton {
-    padding: 8px 20px;
-    background-color: #007bff; 
-    color: #fff; 
-    border: none;
-    border-radius: 5px; 
-    cursor: pointer; 
-  }
-  
-  #filterButton:hover {
-    background-color: #0056b3; 
-  }
-  
-  canvas {
-    width: 100%;
-    height: auto;
-  }
-  
-  .container-fluid {
-    padding: 0 15px; 
-  }
-  
-  .row.content {
-    margin-top: 30px; 
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  tr:hover {
-    background-color: #f5f5f5;
-  }
-  
-  thead {
-    background-color: #f2f2f2;
-  }
-  
-  tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f8f9fc;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  padding: 20px;
+  background-color: #4a69bd; /* Warna latar sidebar */
+  color: #fff; /* Warna teks */
+  list-style-type: none; /* Menghilangkan titik */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan */
+  transition: width 0.3s ease; /* Transisi lebar saat dihover */
+}
+
+.sidebar-brand-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.navbar-nav {
+  margin-top: 20px;
+}
+
+.nav-item {
+  margin-bottom: 10px;
+}
+
+.nav-link {
+  color: #fff;
+}
+
+.nav-link:hover {
+  color: #ffdc34; /* Warna saat hover */
+}
+
+/* Content */
+#content-wrapper {
+  margin-left: 250px;
+  padding: 20px;
+}
+
+/* Cards */
+.card {
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Warna latar kartu */
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #e3e6f0;
+}
+
+.table th, .table td {
+  padding: 12px;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.table th {
+  background-color: #f8f9fc;
+}
+
+/* Sticky Footer */
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #4a69bd; /* Warna latar footer */
+  color: #fff; /* Warna teks */
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex; /* Menggunakan flexbox */
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination .page-item {
+  list-style: none; /* Menghapus tanda bullet */
+}
+
+.pagination .page-item .page-link {
+  color: #fff; /* Warna teks */
+  background-color: #4a69bd; /* Warna latar */
+  border: 1px solid #fff; /* Warna border */
+  margin: 0 2px; /* Mengurangi margin agar terlihat lebih rapat */
+  padding: 6px 12px; /* Padding yang disesuaikan untuk penampilan yang lebih baik */
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #ffdc34; /* Warna saat hover */
+  border-color: #ffdc34; /* Warna border saat hover */
+}

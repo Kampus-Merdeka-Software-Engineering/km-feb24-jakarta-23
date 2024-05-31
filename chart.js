@@ -1,819 +1,550 @@
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var totalRevenue = 0;
-    $.each(data, function(index, item) {
-      var price = parseFloat(item.price.replace(',', '.'));
-      var total_price = parseFloat(item.total_price.replace(',', '.'));
-      totalRevenue += price * item.quantity;
-    });
-    $('#totalRevenue').text('$' + totalRevenue.toFixed(2));
-  });
-});
+let calculateTotalRevenue = () => {
+  fetch('pizza.json')
+    .then(response => response.json())
+    .then(data => {
+      let totalRevenue = 0;
+      data.forEach(item => {
+        let price = parseFloat(item.price.replace(',', '.'));
+        totalRevenue += price * item.quantity;
+      });
+      document.getElementById('totalRevenue').textContent = '$' + totalRevenue.toFixed(2);
+    })
+    .catch(error => console.error('Error:', error));
+};
+document.addEventListener('DOMContentLoaded', calculateTotalRevenue);
 
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var totalPizzaSold = 0;
-    $.each(data, function(index, item) {
-      totalPizzaSold += item.quantity;
-    });
-    $('#totalPizzasSold').text(totalPizzaSold);
-  });
-});
+let calculateTotalOrders = () => {
+  fetch('pizza.json')
+    .then(response => response.json())
+    .then(data => {
+      let uniqueOrderIds = {};
+      data.forEach(item => {
+        uniqueOrderIds[item.order_id] = true;
+      });
+      let totalOrders = Object.keys(uniqueOrderIds).length;
+      document.getElementById('totalOrders').textContent = totalOrders;
+    })
+    .catch(error => console.error('Error:', error));
+};
+document.addEventListener('DOMContentLoaded', calculateTotalOrders);
 
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var uniqueOrderIds = {}; 
-    $.each(data, function(index, item) {
-      uniqueOrderIds[item.order_id] = true; 
-    });
-    var totalOrders = Object.keys(uniqueOrderIds).length; 
-    $('#totalOrders').text(totalOrders);
-  });
-});
+let calculateTotalPizzasSold = () => {
+  fetch('pizza.json')
+    .then(response => response.json())
+    .then(data => {
+      let totalPizzaSold = 0;
+      data.forEach(item => {
+        totalPizzaSold += item.quantity;
+      });
+      document.getElementById('totalPizzasSold').textContent = totalPizzaSold;
+    })
+    .catch(error => console.error('Error:', error));
+};
+document.addEventListener('DOMContentLoaded', calculateTotalPizzasSold);
 
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var ordersPerDay = {}; 
+    
+let drawOrdersPerDayChart = () => {
+  fetch('pizza.json')
+    .then(response => response.json())
+    .then(data => {
+      let ordersPerDay = {};
 
-    $.each(data, function(index, item) {
-      var day = item.day;
-      if (!ordersPerDay[day]) {
-        ordersPerDay[day] = {};
-      }
-      ordersPerDay[day][item.order_id] = true; 
-    });
-
-    var daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
-
-    var labels = daysOfWeek.map(function(day) {
-      return ordersPerDay.hasOwnProperty(day) ? day : ''; // Memeriksa apakah ada data untuk hari tersebut
-    });
-    var data = labels.map(function(label) {
-      return label !== '' ? Object.keys(ordersPerDay[label]).length : 0; // Menghitung jumlah order unik per tanggal
-    });
-
-    var ctx = document.getElementById('ordersChartPerDay').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Orders per Day',
-          data: data,
-          backgroundColor: 'blue',
-          borderColor: 'blue',
-          borderWidth: 0
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
+      data.forEach(item => {
+        let day = item.day;
+        if (!ordersPerDay[day]) {
+          ordersPerDay[day] = {};
         }
-      }
-    });
-  });
-});
+        ordersPerDay[day][item.order_id] = true;
+      });
 
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var ordersPerHour = {}; 
+      let daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
-    $.each(data, function(index, item) {
-      var hour = item.hours;
-      if (!ordersPerHour[hour]) {
-        ordersPerHour[hour] = {};
-      }
-      ordersPerHour[hour][item.order_id] = true; 
-    });
+      let labels = daysOfWeek.map(day => ordersPerDay.hasOwnProperty(day) ? day : '');
+      let dataPoints = labels.map(label => label !== '' ? Object.keys(ordersPerDay[label]).length : 0);
 
-    var labels = [];
-    var data = [];
-    for (var hour = 0; hour < 24; hour++) {
-      labels.push(hour + ':00'); 
-      data.push(ordersPerHour[hour] ? Object.keys(ordersPerHour[hour]).length : 0); // Menghitung jumlah order unik per jam
-    }
-
-    var ctx = document.getElementById('ordersLineChartPerHour').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Orders per Hour',
-          data: data,
-          fill: false,
-          backgroundColor: 'green',
-          borderColor: 'green',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-  });
-});
-
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var ordersPerMonth = {}; // Objek untuk melacak jumlah order unik per bulan
-
-    // Menghitung jumlah order unik per bulan
-    $.each(data, function(index, item) {
-      var month = item.month;
-      if (!ordersPerMonth[month]) {
-        ordersPerMonth[month] = {};
-      }
-      ordersPerMonth[month][item.order_id] = true; // Menggunakan objek untuk memastikan order_id unik
-    });
-
-    // Mengambil label (bulan) dan data (jumlah order) dari objek ordersPerMonth
-    var labels = Object.keys(ordersPerMonth);
-    var data = labels.map(function(label) {
-      return Object.keys(ordersPerMonth[label]).length; // Menghitung jumlah order unik per bulan
-    });
-
-    // Membuat diagram garis menggunakan Chart.js
-    var ctx = document.getElementById('ordersLineChartPerMonth').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Orders per Month',
-          data: data,
-          fill: false,
-          backgroundColor: 'green',
-          borderColor: 'green',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-  });
-});
-
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var salesByCategory = {}; // Objek untuk melacak total penjualan per kategori
-
-    // Menghitung total penjualan per kategori
-    $.each(data, function(index, item) {
-      var category = item.category;
-      if (!salesByCategory[category]) {
-        salesByCategory[category] = 0;
-      }
-      salesByCategory[category] += parseFloat(item.total_price.replace(',', '.')); // Menambahkan total penjualan
-    });
-
-    // Menghitung total penjualan keseluruhan
-    var totalSales = Object.values(salesByCategory).reduce((a, b) => a + b, 0);
-
-    // Menghitung persentase penjualan masing-masing kategori
-    var percentages = {};
-    Object.keys(salesByCategory).forEach(function(category) {
-      percentages[category] = (salesByCategory[category] / totalSales) * 100;
-    });
-
-    // Membuat array label (kategori) dan data (persentase) untuk diagram donut
-    var labels = Object.keys(percentages);
-    var data = Object.values(percentages);
-
-    // Membuat diagram donut menggunakan Chart.js
-    var ctx = document.getElementById('salesDonutChartPerCategory').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Sales by Category Percentage',
-          data: data,
-          backgroundColor: ['red', 'yellow', 'green', 'blue', 'purple', 'orange', 'pink'], // Warna background
-          borderColor: 'white', // Warna border
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        legend: {
-          position: 'bottom'
-        },
-        title: {
-          display: true,
-          text: 'Sales by Category Percentage'
-        },
-        animation: {
-          animateScale: true,
-          animateRotate: true
-        }
-      }
-    });
-  });
-});
-
-$(document).ready(function(){
-  $.getJSON('pizza.json', function(data) {
-    var salesBySize = {}; // Objek untuk melacak total penjualan per ukuran
-
-    // Menghitung total penjualan per ukuran
-    $.each(data, function(index, item) {
-      var size = item.size;
-      if (!salesBySize[size]) {
-        salesBySize[size] = 0;
-      }
-      salesBySize[size] += parseFloat(item.total_price.replace(',', '.')); // Menambahkan total penjualan
-    });
-
-    // Menghitung total penjualan keseluruhan
-    var totalSales = Object.values(salesBySize).reduce((a, b) => a + b, 0);
-
-    // Menghitung persentase penjualan masing-masing ukuran
-    var percentages = {};
-    Object.keys(salesBySize).forEach(function(size) {
-      percentages[size] = (salesBySize[size] / totalSales) * 100;
-    });
-
-    // Membuat array label (ukuran) dan data (persentase) untuk diagram donut
-    var labels = Object.keys(percentages);
-    var data = Object.values(percentages);
-
-    // Membuat diagram donut menggunakan Chart.js
-    var ctx = document.getElementById('salesDonutChartPerSize').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Sales by Size Percentage',
-          data: data,
-          backgroundColor: ['red', 'yellow', 'green', 'blue', 'purple', 'orange', 'pink'], // Warna background
-          borderColor: 'white', // Warna border
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        legend: {
-          position: 'bottom'
-        },
-        title: {
-          display: true,
-          text: 'Sales by Size Percentage'
-        },
-        animation: {
-          animateScale: true,
-          animateRotate: true
-        },
-        tooltips: {
-          callbacks: {
-            label: function(tooltipItem, data) {
-              var label = data.labels[tooltipItem.index];
-              var value = data.datasets[0].data[tooltipItem.index];
-              return label + ': ' + value;
-            }
-          }
-        }
-      }
-    });
-  });
-});
-
-$.getJSON('pizza.json', function(data) {
-  // Object untuk melacak total penjualan pizza per kategori
-  var pizzaSoldByCategory = {};
-
-  // Hitung total penjualan pizza per kategori
-  data.forEach(function(item) {
-      var category = item.category;
-      if (!pizzaSoldByCategory[category]) {
-          pizzaSoldByCategory[category] = 0;
-      }
-      pizzaSoldByCategory[category] += parseInt(item.quantity);
-  });
-
-  // Ekstrak label (kategori) dan data (total penjualan) untuk grafik
-  var labels = Object.keys(pizzaSoldByCategory);
-  var chartData = Object.values(pizzaSoldByCategory);
-
-  // Buat grafik bar horizontal menggunakan Chart.js
-  var ctx = document.getElementById('pizzaSoldByCategoryChart').getContext('2d');
-  var chart = new Chart(ctx, {
-      type: 'bar',
-      data: {
+      let ctx = document.getElementById('ordersPerDay').getContext('2d');
+      let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
           labels: labels,
           datasets: [{
-              label: 'Total Penjualan Pizza per Kategori',
-              data: chartData,
-              backgroundColor: 'blue',
-              borderColor: 'blue',
-              borderWidth: 0
-          }]
+            label: "Total Orders",
+            lineTension: 0.3,
+            backgroundColor: "rgba(78, 115, 223, 0.5)",
+            borderColor: "rgba(78, 115, 223, 1)",
+            pointRadius: 3,
+            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointBorderColor: "rgba(78, 115, 223, 1)",
+            pointHoverRadius: 3,
+            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+            pointHitRadius: 10,
+            pointBorderWidth: 2,
+            data: dataPoints,
+          }],
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    })
+    .catch(error => console.error('Error:', error));
+};
+document.addEventListener('DOMContentLoaded', drawOrdersPerDayChart);
+
+fetch('pizza.json')
+  .then(response => response.json())
+  .then(data => {
+    let pizzaSoldByCategory = {};
+
+    data.forEach(item => {
+      let category = item.category;
+      if (!pizzaSoldByCategory[category]) {
+        pizzaSoldByCategory[category] = 0;
+      }
+      pizzaSoldByCategory[category] += parseInt(item.quantity);
+    });
+
+    let labels = Object.keys(pizzaSoldByCategory);
+    let chartData = Object.values(pizzaSoldByCategory);
+
+    let ctx = document.getElementById('pizzaSoldByCategory').getContext('2d');
+    let chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Total Sold",
+          backgroundColor: "#4e73df",
+          hoverBackgroundColor: "#2e59d9",
+          borderColor: "#4e73df",
+          data: chartData,
+        }],
       },
       options: {
-        indexAxis: 'y',
-          scales: {
-              xAxes: [{
-                  ticks: {
-                      beginAtZero: true
-                  }
-              }]
-          }
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-  });
+    });
+  })
+  .catch(error => console.error('Error:', error));
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                var salesBySize = {};
+
+                data.forEach(function(item) {
+                    var size = item.size;
+                    if (!salesBySize[size]) {
+                        salesBySize[size] = 0;
+                    }
+                    salesBySize[size] += parseFloat(item.total_price.replace(',', '.'));
+                });
+
+                var totalSales = Object.values(salesBySize).reduce((a, b) => a + b, 0);
+
+                var percentages = {};
+                Object.keys(salesBySize).forEach(function(size) {
+                    percentages[size] = (salesBySize[size] / totalSales) * 100;
+                });
+
+                var labels = Object.keys(percentages);
+                var data = Object.values(percentages);
+
+                var ctx = document.getElementById('salesDonutChartPerSize').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Sales by Size Percentage',
+                            data: data,
+                            backgroundColor: ['#4e73df', '#ff6b6b', '#ffd166', '#45aaf2', '#50bfa9'],
+                            hoverBorderColor: "rgba(234, 236, 244, 1)",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales by Size Percentage'
+                        },
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        },
+                    }
+                });
+            } else {
+                console.error('Failed to fetch data: ' + xhr.status);
+            }
+        }
+    };
+    xhr.open('GET', 'pizza.json');
+    xhr.send();
 });
   
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      // Menghitung total penjualan untuk setiap jenis pizza
-      var pizzaSales = {};
-      data.forEach(function(item) {
-        var pizzaId = item.name;
-        var totalPrice = parseFloat(item.total_price.replace(',', '.'));
-        if (pizzaSales[pizzaId]) {
-          pizzaSales[pizzaId] += totalPrice;
-        } else {
-          pizzaSales[pizzaId] = totalPrice;
-        }
-      });
   
-      // Mengurutkan hasil penjualan dari yang tertinggi ke terendah
-      var sortedSales = Object.keys(pizzaSales).sort(function(a, b) {
-        return pizzaSales[b] - pizzaSales[a];
-      });
+    document.addEventListener("DOMContentLoaded", function() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                  var data = JSON.parse(xhr.responseText);
+                  console.log(data); 
   
-      // Memilih 5 pizza teratas
-      var top5Pizzas = sortedSales.slice(0, 5);
+                  var pizzaSales = {};
+                  data.forEach(function(item) {
+                      var pizzaId = item.name;
+                      var totalPrice = parseFloat(item.total_price.replace(',', '.'));
+                      if (pizzaSales[pizzaId]) {
+                          pizzaSales[pizzaId] += totalPrice;
+                      } else {
+                          pizzaSales[pizzaId] = totalPrice;
+                      }
+                  });
   
-      // Persiapkan data untuk chart
-      var chartLabels = [];
-      var chartData = [];
-      top5Pizzas.forEach(function(pizzaId) {
-        var pizzaName = data.find(function(item) {
-          return item.name === pizzaId;
-        }).name;
-        chartLabels.push(pizzaName);
-        chartData.push(pizzaSales[pizzaId]);
-      });
+                  var sortedSales = Object.keys(pizzaSales).sort(function(a, b) {
+                      return pizzaSales[b] - pizzaSales[a];
+                  });
   
-      // Membuat bar chart
-      var ctx = document.getElementById('topPizzaByRevenue').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Total Penjualan',
-            data: chartData,
-            backgroundColor: [
-              'blue'
-            ],
-            borderColor: [
-              'blue'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
+                  var top5Pizzas = sortedSales.slice(0, 5);
+  
+                  var chartLabels = [];
+                  var chartData = [];
+                  top5Pizzas.forEach(function(pizzaId) {
+                      var pizzaName = data.find(function(item) {
+                          return item.name === pizzaId;
+                      }).name;
+                      chartLabels.push(pizzaName);
+                      chartData.push(pizzaSales[pizzaId]);
+                  });
+  
+                  var ctx = document.getElementById('topPizzaByRevenue').getContext('2d');
+                  var myChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                          labels: chartLabels,
+                          datasets: [{
+                              label: 'Total Revenue',
+                              data: chartData,
+                              backgroundColor: "#4e73df",
+                              hoverBackgroundColor: "#2e59d9",
+                              borderColor: "#4e73df",
+                              borderWidth: 0
+                          }]
+                      },
+                      options: {
+                          indexAxis: 'y',
+                          scales: {
+                              yAxes: [{
+                                  ticks: {
+                                      beginAtZero: true
+                                  }
+                              }]
+                          },
+                      }
+                  });
+              } else {
+                  console.error('Failed to fetch data: ' + xhr.status);
               }
-            }]
           }
-        }
-      });
-    });
+      };
+      xhr.open('GET', 'pizza.json');
+      xhr.send();
   });
   
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      // Menghitung total quantity untuk setiap jenis pizza
-      var pizzaQuantities = {};
-      data.forEach(function(item) {
-        var pizzaId = item.name;
-        var quantity = parseInt(item.quantity);
-        if (pizzaQuantities[pizzaId]) {
-          pizzaQuantities[pizzaId] += quantity;
-        } else {
-          pizzaQuantities[pizzaId] = quantity;
-        }
-      });
-  
-      // Mengurutkan hasil quantity dari yang tertinggi ke terendah
-      var sortedQuantities = Object.keys(pizzaQuantities).sort(function(a, b) {
-        return pizzaQuantities[b] - pizzaQuantities[a];
-      });
-  
-      // Memilih 5 pizza teratas
-      var top5Pizzas = sortedQuantities.slice(0, 5);
-  
-      // Persiapkan data untuk chart
-      var chartLabels = [];
-      var chartData = [];
-      top5Pizzas.forEach(function(pizzaId) {
-        var pizzaName = data.find(function(item) {
-          return item.name === pizzaId;
-        }).name;
-        chartLabels.push(pizzaName);
-        chartData.push(pizzaQuantities[pizzaId]);
-      });
-  
-      // Membuat bar chart
-      var ctx = document.getElementById('topPizzaByQuantity').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Total Quantity',
-            data: chartData,
-            backgroundColor: [
-              'blue'
-            ],
-            borderColor: [
-              'blue'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
-    });
-  });
-  
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      // Menghitung total orders yang berbeda untuk setiap jenis pizza
-      var pizzaOrders = {};
-      data.forEach(function(item) {
-        var pizzaId = item.name;
-        var orderId = item.order_id;
-        if (pizzaOrders[pizzaId]) {
-          if (!pizzaOrders[pizzaId].includes(orderId)) {
-            pizzaOrders[pizzaId].push(orderId);
-          }
-        } else {
-          pizzaOrders[pizzaId] = [orderId];
-        }
-      });
-    
-      // Mengurutkan pizza-pizza berdasarkan jumlah orders yang berbeda
-      var sortedPizzas = Object.keys(pizzaOrders).sort(function(a, b) {
-        return pizzaOrders[b].length - pizzaOrders[a].length;
-      });
-    
-      // Memilih 5 pizza teratas
-      var top5Pizzas = sortedPizzas.slice(0, 5);
-    
-      // Persiapkan data untuk chart
-      var chartLabels = [];
-      var chartData = [];
-      top5Pizzas.forEach(function(pizzaId) {
-        var pizzaName = pizzaId;
-        chartLabels.push(pizzaName);
-        chartData.push(pizzaOrders[pizzaId].length);
-      });
-    
-      // Membuat bar chart
-      var ctx = document.getElementById('topPizzaByOrders').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Total Orders',
-            data: chartData,
-            backgroundColor: [
-              'blue'
-            ],
-            borderColor: [
-              'blue'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
-    });
-  });
-  
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      // Menghitung total penjualan untuk setiap jenis pizza
-      var pizzaSales = {};
-      data.forEach(function(item) {
-        var pizzaId = item.name;
-        var totalPrice = parseFloat(item.total_price.replace(',', '.'));
-        if (pizzaSales[pizzaId]) {
-          pizzaSales[pizzaId] += totalPrice;
-        } else {
-          pizzaSales[pizzaId] = totalPrice;
-        }
-      });
-  
-      // Mengurutkan hasil penjualan dari yang tertinggi ke terendah
-      var sortedSales = Object.keys(pizzaSales).sort(function(a, b) {
-        return pizzaSales[a] - pizzaSales[b];
-      });
-  
-      // Memilih 5 pizza teratas
-      var top5Pizzas = sortedSales.slice(0, 5);
-  
-      // Persiapkan data untuk chart
-      var chartLabels = [];
-      var chartData = [];
-      top5Pizzas.forEach(function(pizzaId) {
-        var pizzaName = data.find(function(item) {
-          return item.name === pizzaId;
-        }).name;
-        chartLabels.push(pizzaName);
-        chartData.push(pizzaSales[pizzaId]);
-      });
-  
-      // Membuat bar chart
-      var ctx = document.getElementById('botPizzaByRevenue').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Total Penjualan',
-            data: chartData,
-            backgroundColor: [
-              'red'
-            ],
-            borderColor: [
-              'red'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
-    });
-  });
-  
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      // Menghitung total quantity untuk setiap jenis pizza
-      var pizzaQuantities = {};
-      data.forEach(function(item) {
-        var pizzaId = item.name;
-        var quantity = parseInt(item.quantity);
-        if (pizzaQuantities[pizzaId]) {
-          pizzaQuantities[pizzaId] += quantity;
-        } else {
-          pizzaQuantities[pizzaId] = quantity;
-        }
-      });
-  
-      // Mengurutkan hasil quantity dari yang tertinggi ke terendah
-      var sortedQuantities = Object.keys(pizzaQuantities).sort(function(a, b) {
-        return pizzaQuantities[a] - pizzaQuantities[b];
-      });
-  
-      // Memilih 5 pizza teratas
-      var top5Pizzas = sortedQuantities.slice(0, 5);
-  
-      // Persiapkan data untuk chart
-      var chartLabels = [];
-      var chartData = [];
-      top5Pizzas.forEach(function(pizzaId) {
-        var pizzaName = data.find(function(item) {
-          return item.name === pizzaId;
-        }).name;
-        chartLabels.push(pizzaName);
-        chartData.push(pizzaQuantities[pizzaId]);
-      });
-  
-      // Membuat bar chart
-      var ctx = document.getElementById('botPizzaByQuantity').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Total Quantity',
-            data: chartData,
-            backgroundColor: [
-              'red'
-            ],
-            borderColor: [
-              'red'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
-    });
-  });
-  
-  $(document).ready(function(){
-    $.getJSON('pizza.json', function(data) {
-      // Menghitung total orders yang berbeda untuk setiap jenis pizza
-      var pizzaOrders = {};
-      data.forEach(function(item) {
-        var pizzaId = item.name;
-        var orderId = item.order_id;
-        if (pizzaOrders[pizzaId]) {
-          if (!pizzaOrders[pizzaId].includes(orderId)) {
-            pizzaOrders[pizzaId].push(orderId);
-          }
-        } else {
-          pizzaOrders[pizzaId] = [orderId];
-        }
-      });
-    
-      // Mengurutkan pizza-pizza berdasarkan jumlah orders yang berbeda
-      var sortedPizzas = Object.keys(pizzaOrders).sort(function(a, b) {
-        return pizzaOrders[a].length - pizzaOrders[b].length;
-      });
-    
-      // Memilih 5 pizza teratas
-      var top5Pizzas = sortedPizzas.slice(0, 5);
-    
-      // Persiapkan data untuk chart
-      var chartLabels = [];
-      var chartData = [];
-      top5Pizzas.forEach(function(pizzaId) {
-        var pizzaName = pizzaId;
-        chartLabels.push(pizzaName);
-        chartData.push(pizzaOrders[pizzaId].length);
-      });
-    
-      // Membuat bar chart
-      var ctx = document.getElementById('botPizzaByOrders').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Total Orders',
-            data: chartData,
-            backgroundColor: [
-              'red'
-            ],
-            borderColor: [
-              'red'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
-    });
-  });
+      
+  document.addEventListener("DOMContentLoaded", function() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                var pizzaSales = {};
+                data.forEach(function(item) {
+                    var pizzaId = item.name;
+                    var totalPrice = parseFloat(item.total_price.replace(',', '.'));
+                    if (pizzaSales[pizzaId]) {
+                        pizzaSales[pizzaId] += totalPrice;
+                    } else {
+                        pizzaSales[pizzaId] = totalPrice;
+                    }
+                });
 
-  $(document).ready(function(){
-    var currentPage = 1;
-    var itemsPerPage = 10;
-    var jsonData; 
-    var uniqueItems; 
+                var sortedSales = Object.keys(pizzaSales).sort(function(a, b) {
+                    return pizzaSales[a] - pizzaSales[b];
+                });
 
-    function loadData() {
-        $.getJSON('pizza.json', function(data) {
-            jsonData = data;
-            uniqueItems = getUniqueItems(jsonData);
-            renderTable(uniqueItems);
-        });
-    }
+                var bottom5Pizzas = sortedSales.slice(0, 5);
 
-    function getUniqueItems(data) {
-        var uniqueItems = {};
-        data.forEach(function(item) {
-            var key = item.name + item.size + item.price;
-            if (!uniqueItems[key]) {
-                uniqueItems[key] = item;
+                var chartLabels = [];
+                var chartData = [];
+                bottom5Pizzas.forEach(function(pizzaId) {
+                    var pizzaName = data.find(function(item) {
+                        return item.name === pizzaId;
+                    }).name;
+                    chartLabels.push(pizzaName);
+                    chartData.push(pizzaSales[pizzaId]);
+                });
+
+                var ctx = document.getElementById('bottomPizzaByRevenue').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Total Revenue',
+                            data: chartData,
+                            backgroundColor: "#4e73df",
+                            hoverBackgroundColor: "#2e59d9",
+                            borderColor: "#4e73df",
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                    }
+                });
+            } else {
+                console.error('Failed to fetch data: ' + xhr.status);
             }
-        });
-        return Object.values(uniqueItems);
-    }
+        }
+    };
+    xhr.open('GET', 'pizza.json');
+    xhr.send();
+});
 
-  function renderTable(data) {
-  data.sort(function(a, b) {
-      var nameA = a.name.toUpperCase(); 
-      var nameB = b.name.toUpperCase(); 
-      if (nameA < nameB) {
-          return -1;
-      }
-      if (nameA > nameB) {
-          return 1;
-      }
-      return 0;
-  });
 
-  var startIndex = (currentPage - 1) * itemsPerPage;
-  var endIndex = startIndex + itemsPerPage;
-  var tableBody = $('#tables tbody');
-  tableBody.empty(); 
+document.addEventListener("DOMContentLoaded", function () {
+  var currentPage = 1;
+  var itemsPerPage = 10;
+  var jsonData;
+  var uniqueItems;
 
-  for (var i = startIndex; i < endIndex && i < data.length; i++) {
-      var item = data[i];
-      tableBody.append('<tr><td>' + (i + 1) + '</td><td>' + item.name + '</td><td>' + item.size + '</td><td>$' + item.price + '</td><tr>');
+  function loadData() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'pizza.json', true);
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              jsonData = JSON.parse(xhr.responseText);
+              uniqueItems = getUniqueItems(jsonData);
+              renderTable(uniqueItems);
+          }
+      };
+      xhr.send();
   }
 
-  renderPagination(data.length);
-}
+  function getUniqueItems(data) {
+      var uniqueItems = {};
+      data.forEach(function (item) {
+          var key = item.name + item.size + item.price;
+          if (!uniqueItems[key]) {
+              uniqueItems[key] = item;
+          }
+      });
+      return Object.values(uniqueItems);
+  }
 
-    function renderPagination(totalItems) {
-        var totalPages = Math.ceil(totalItems / itemsPerPage);
-        var paginationList = $('.pagination');
-        paginationList.empty(); 
+  function renderTable(data) {
+      data.sort(function (a, b) {
+          var nameA = a.name.toUpperCase();
+          var nameB = b.name.toUpperCase();
+          if (nameA < nameB) {
+              return -1;
+          }
+          if (nameA > nameB) {
+              return 1;
+          }
+          return 0;
+      });
 
-        paginationList.append('<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="prevPage()">Previous</a></li>');
-        
-        for (var i = 1; i <= totalPages; i++) {
-            paginationList.append('<li class="page-item ' + (currentPage === i ? 'active' : '') + '"><a class="page-link" href="#" onclick="changePage(' + i + ')">' + i + '</a></li>');
-        }
+      var startIndex = (currentPage - 1) * itemsPerPage;
+      var endIndex = startIndex + itemsPerPage;
+      var tableBody = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
+      tableBody.innerHTML = '';
 
-        paginationList.append('<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>');
-    }
+      for (var i = startIndex; i < endIndex && i < data.length; i++) {
+          var item = data[i];
+          var row = tableBody.insertRow();
+          row.innerHTML = '<td>' + (i + 1) + '</td><td>' + item.name + '</td><td>' + item.size + '</td><td>$' + item.price + '</td>';
+      }
 
-    window.changePage = function(page) {
-        currentPage = page;
-        renderTable(uniqueItems);
-    }
+      renderPagination(data.length);
+  }
 
-    window.prevPage = function() {
-        if (currentPage > 1) {
-            currentPage--;
-            renderTable(uniqueItems);
-        }
-    }
+  function renderPagination(totalItems) {
+      var totalPages = Math.ceil(totalItems / itemsPerPage);
+      var paginationList = document.querySelectorAll('.pagination')[0];
+      paginationList.innerHTML = '';
 
-    window.nextPage = function() {
-        var totalPages = Math.ceil(uniqueItems.length / itemsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderTable(uniqueItems);
-        }
-    }
+      paginationList.insertAdjacentHTML('beforeend', '<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="prevPage()">Previous</a></li>');
 
-    loadData();
+      for (var i = 1; i <= totalPages; i++) {
+          paginationList.insertAdjacentHTML('beforeend', '<li class="page-item ' + (currentPage === i ? 'active' : '') + '"><a class="page-link" href="#" onclick="changePage(' + i + ')">' + i + '</a></li>');
+      }
+
+      paginationList.insertAdjacentHTML('beforeend', '<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>');
+  }
+
+  window.changePage = function (page) {
+      currentPage = page;
+      renderTable(uniqueItems);
+  }
+
+  window.prevPage = function () {
+      if (currentPage > 1) {
+          currentPage--;
+          renderTable(uniqueItems);
+      }
+  }
+
+  window.nextPage = function () {
+      var totalPages = Math.ceil(uniqueItems.length / itemsPerPage);
+      if (currentPage < totalPages) {
+          currentPage++;
+          renderTable(uniqueItems);
+      }
+  }
+
+  loadData();
 });
+
+(function () {
+  "use strict";
+
+  document.getElementById('sidebarToggle').addEventListener('click', function (e) {
+      document.body.classList.toggle('sidebar-toggled');
+      var sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('toggled');
+      if (sidebar.classList.contains('toggled')) {
+          var collapses = sidebar.querySelectorAll('.collapse');
+          collapses.forEach(function (collapse) {
+              collapse.classList.remove('show');
+          });
+      }
+  });
+
+  window.addEventListener('resize', function () {
+      if (window.innerWidth < 768) {
+          var collapses = document.querySelectorAll('.sidebar .collapse');
+          collapses.forEach(function (collapse) {
+              collapse.classList.remove('show');
+          });
+      }
+  });
+
+  var sidebar = document.querySelector('body.fixed-nav .sidebar');
+  sidebar.addEventListener('wheel', function (e) {
+      if (window.innerWidth > 768) {
+          var delta = e.deltaY || e.detail || e.wheelDelta;
+          this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+          e.preventDefault();
+      }
+  });
+
+  window.addEventListener('scroll', function () {
+      var scrollDistance = document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollToTopButton = document.querySelector('.scroll-to-top');
+      if (scrollDistance > 100) {
+          scrollToTopButton.style.display = 'block';
+      } else {
+          scrollToTopButton.style.display = 'none';
+      }
+  });
+
+  document.querySelectorAll('a.scroll-to-top').forEach(function (anchor) {
+      anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          var target = document.querySelector(anchor.getAttribute('href'));
+          target.scrollIntoView({
+              behavior: 'smooth'
+          });
+      });
+  });
+})();
+
+(function () {
+  var modalBtns = document.querySelectorAll("#myBtn, #modalLong, #modalScroll, #modalCenter");
+  modalBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+          document.querySelector('.modal').classList.toggle('show');
+      });
+  });
+})();
+
+(function () {
+  var popovers = document.querySelectorAll('[data-toggle="popover"]');
+  popovers.forEach(function (popover) {
+      new bootstrap.Popover(popover);
+  });
+
+  var popoverDismiss = document.querySelectorAll('.popover-dismiss');
+  popoverDismiss.forEach(function (dismiss) {
+      new bootstrap.Popover(dismiss, {
+          trigger: 'focus'
+      });
+  });
+})();
+
+document.addEventListener('DOMContentLoaded', function () {
+    const monthFilterSelect = document.getElementById('monthFilter');
+
+    // Fetch JSON data
+    fetch('pizza.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Extract unique months from data
+        const uniqueMonths = [...new Set(data.map(item => item.month))];
+
+        // Populate select element with unique months
+        uniqueMonths.forEach(month => {
+          const option = document.createElement('option');
+          option.value = month;
+          option.textContent = month;
+          monthFilterSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const sidebarToggle = document.querySelector("#sidebarToggle");
+    const sidebar = document.querySelector("#sidebar");
+    sidebarToggle.addEventListener("click", function() {
+    sidebar.classList.toggle("toggled");
+    });
+  });
+  
