@@ -1,39 +1,40 @@
 ﻿# km-feb24-jakarta-23
  
-# Pizza Place Sales Dashboard
+# Pizza Sales Dashboard
 
-This is a web-based dashboard for monitoring the sales data of a pizza place. It provides charts and tables to visualize various metrics related to revenue, orders, and pizza sales.
+**Pizza Sales Dashboard** adalah sebuah proyek berbasis web yang dirancang untuk memvisualisasikan data penjualan pizza. Ini mencakup berbagai jenis grafik untuk mewakili statistik penjualan dan memungkinkan pengguna untuk menyaring data berdasarkan bulan, serta mencari item pizza tertentu.
 
-## Features
-- Total Revenue Card
-- Total Orders Card
-- Total Pizzas Sold Card
-- Trends for Total Orders (Area Chart)
-- Total Pizza Sold by Category (Pie Chart)
-- Total Revenue by Month (Bar Chart)
-- Sales Performance (Donut Charts)
-  - Sales by Size
-  - Sales by Category
-- Seller Analysis
-  - Top 5 Pizzas by Revenue
-  - Bottom 5 Pizzas by Revenue
-  - Top 5 Pizzas by Quantity
-  - Bottom 5 Pizzas by Quantity
-  - Top 5 Sellers by Orders
-  - Bottom 5 Sellers by Orders
+## Fitur
 
-## Usage
-1. Clone the repository.
-2. Open index.html in a web browser.
+### Grafik
 
-## Screenshots
-![Dashboard Screenshot](/SampleFolder/202429.jpg)
+Dashboard ini mencakup grafik-garifik berikut:
+- **Orders Per Day**: Grafik garis yang menampilkan jumlah total pesanan setiap hari dalam seminggu.
+- **Pizza Sold By Category**: Grafik batang yang menampilkan total kuantitas pizza yang terjual untuk setiap kategori.
+- **Sales Donut Chart Per Size**: Grafik donat yang mengilustrasikan distribusi penjualan berdasarkan ukuran pizza.
+- **Top Pizza By Revenue**: Grafik batang yang menampilkan 5 pizza teratas berdasarkan pendapatan.
+- **Bottom Pizza By Revenue**: Grafik batang yang menampilkan 5 pizza terbawah berdasarkan pendapatan.
 
-## Dependencies
-- [Font Awesome](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css)
-- [Bootstrap](https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js)
-- [Chart.js](https://cdn.jsdelivr.net/npm/chart.js)
-- [jQuery](https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js)
+### Penyaringan
 
-## Credits
-- Developed by Team 23 Jakarta
+- **Month Filter**: Pengguna dapat menyaring data dengan memilih bulan tertentu dari menu dropdown. Grafik akan diperbarui sesuai bulan yang dipilih.
+
+### Pencarian
+
+- **Search Input**: Pengguna dapat mencari item pizza tertentu menggunakan kolom input pencarian. Tabel akan diperbarui untuk menampilkan item yang sesuai.
+
+## Cara Menggunakan
+
+1. Buka dashboard di peramban web Anda.
+2. Gunakan penyaring bulan untuk memilih bulan tertentu atau biarkan "All" untuk melihat data untuk semua bulan.
+3. Gunakan kolom input pencarian untuk mencari item pizza tertentu.
+
+## Ketergantungan
+
+Proyek ini bergantung pada dependensi berikut:
+- [Chart.js](https://www.chartjs.org/) untuk membuat grafik.
+- [FontAwesome](https://fontawesome.com/) untuk ikon.
+
+## Sumber Data
+
+Data penjualan pizza diambil dari file JSON bernama `pizza.json`.
