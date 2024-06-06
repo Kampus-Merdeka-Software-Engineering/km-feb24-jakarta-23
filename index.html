@@ -10,7 +10,6 @@
 </head>
 <body>
   <div id="wrapper">
-    <!-- Sidebar -->
     <nav class="sidebar">
       <div class="sidebar-brand">
         <img src="img/logo.png" width="50" height="50" alt="Logo">
@@ -38,18 +37,12 @@
         </li>
       </ul>
     </nav>
-    <!-- End of Sidebar -->
-
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
-
-        <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div>
             <h1>Dashboard</h1>
           </div>
-
-          <!-- Filter by Month -->
           <div class="row mb-3">
             <div class="col-md-4">
               <label for="monthFilter" class="form-label">Filter by Month:</label>
@@ -57,68 +50,65 @@
             </div>
           </div>
           <br>
-          <!-- Cards -->
           <div class="row mb-3">
-            <!-- Total Revenue -->
             <div class="col-sm-3">
               <div class="card">
-                <div class="card-body">
-                  <strong>Total Revenue</strong>
-                  <div class="font-weight-bold" id="totalRevenue"></div>
-                  <div class="text-xs">
-                    <span>January - December 2015</span>
+                <div class="card-title">
+                  <div>
+                    <strong>Total Revenue</strong>
+                    <div class="font-weight-bold" id="totalRevenue"></div>
+                    <div class="text-xs">
+                      <span>Jan - Dec 2015</span>
+                    </div>
                   </div>
-                  <div class="col-auto">
-                    <i class="fa fa-money fa-2x text-primary"></i>
+                  <div class="icon-wrapper">
+                    <i class="fa fa-money fa-2x"></i>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Total Orders -->
             <div class="col-sm-3">
               <div class="card">
-                <div class="card-body">
-                  <strong>Total Orders</strong>
-                  <div class="font-weight-bold" id="totalOrders"></div>
-                  <div class="text-xs">
-                    <span>January - December 2015</span>
+                <div class="card-title">
+                  <div>
+                    <strong>Total Orders</strong>
+                    <div class="font-weight-bold" id="totalOrders"></div>
+                    <div class="text-xs">
+                      <span>Jan - Dec 2015</span>
+                    </div>
                   </div>
-                  <div class="col-auto">
-                    <i class="fa fa-users fa-2x text-success"></i>
+                  <div class="icon-wrapper">
+                    <i class="fa fa-users fa-2x"></i>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Total Pizzas Sold -->
             <div class="col-sm-3">
               <div class="card">
-                <div class="card-body">
-                  <strong>Total Pizzas Sold</strong>
-                  <div class="font-weight-bold" id="totalPizzasSold"></div>
-                  <div class="text-xs">
-                    <span>January - December 2015</span>
+                <div class="card-title">
+                  <div>
+                    <strong>Total Sold</strong>
+                    <div class="font-weight-bold" id="totalPizzasSold"></div>
+                    <div class="text-xs">
+                      <span>Jan - Dec 2015</span>
+                    </div>
                   </div>
-                  <div class="col-auto">
-                    <i class="fa fa-shopping-cart fa-2x text-info"></i>
+                  <div class="icon-wrapper">
+                    <i class="fa fa-shopping-cart fa-2x"></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- End of Cards -->
-
-          <!-- Charts -->
           <div class="row mb-3">
-            <!-- Daily Trends for Total Orders -->
             <div class="col-sm-8">
               <div class="card">
                 <div class="card-body">
                   <h6 class="font-weight-bold">Daily Trends for Total Orders</h6>
-                  <canvas id="ordersPerDay" height="100"></canvas>
+                  <canvas id="ordersPerDay" height="120"></canvas>
                 </div>
               </div>
             </div>
-            <!-- Total Pizza Sold by Category -->
             <div class="col-sm-4">
               <div class="card">
                 <div class="card-body">
@@ -128,11 +118,7 @@
               </div>
             </div>
           </div>
-          <!-- End of Charts -->
-
-          <!-- Additional Cards -->
           <div class="row mb-3">
-            <!-- Sales Performance by Size -->
             <div class="col-sm-3">
               <div class="card">
                 <div class="card-body">
@@ -141,7 +127,6 @@
                 </div>
               </div>
             </div>
-            <!-- Best Seller by Revenue -->
             <div class="col-sm-3">
               <div class="card">
                 <div class="card-body">
@@ -150,7 +135,6 @@
                 </div>
               </div>
             </div>
-            <!-- Worst Seller by Revenue -->
             <div class="col-sm-3">
               <div class="card">
                 <div class="card-body">
@@ -160,16 +144,11 @@
               </div>
             </div>
           </div>
-          <!-- End of Additional Cards -->
-          <br>
         </div>
-        <!-- End of Container Fluid -->
       </div>
     </div>
   </div>
-  <!-- End of Wrapper -->
 
-  <!-- Footer -->
   <footer class="sticky-footer">
     <div class="container">
       <div class="text-center">
@@ -177,9 +156,7 @@
       </div>
     </div>
   </footer>
-  <!-- End of Footer -->
 
-  <!-- JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>

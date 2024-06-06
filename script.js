@@ -3,10 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalRevenueElement = document.getElementById('totalRevenue');
     const totalOrdersElement = document.getElementById('totalOrders');
     const totalPizzasSoldElement = document.getElementById('totalPizzasSold');
-    let chartInstances = {}; // Objek untuk menyimpan instance dari setiap chart
-    let allData = []; // Menyimpan data asli sebelum disaring
+    let chartInstances = {}; 
+    let allData = []; 
 
-    // Fetch JSON data
     fetch('pizza.json')
         .then(response => {
             if (!response.ok) {
@@ -15,11 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
-            allData = data; // Menyimpan data asli
-            // Extract unique months from data
+            allData = data; 
             const uniqueMonths = ['All', ...new Set(data.map(item => item.month))];
 
-            // Populate select element with unique months
             uniqueMonths.forEach(month => {
                 const option = document.createElement('option');
                 option.value = month;
@@ -27,65 +24,54 @@ document.addEventListener('DOMContentLoaded', function () {
                 monthFilterSelect.appendChild(option);
             });
 
-            // Menggambar semua grafik awal dengan semua data
             drawAllCharts(data);
 
-            // Menambahkan event listener untuk perubahan pilihan bulan
             monthFilterSelect.addEventListener('change', function () {
-                const selectedMonth = this.value; // Mendapatkan nilai bulan yang dipilih
-                let filteredData = []; // Menyimpan data yang akan digunakan untuk menggambar grafik
+                const selectedMonth = this.value; 
+                let filteredData = []; 
 
                 if (selectedMonth === 'All') {
-                    filteredData = allData; // Jika memilih "All", gunakan data asli
+                    filteredData = allData; 
+                    document.querySelectorAll('.text-xs span').forEach(span => {
+                        span.textContent = 'Jan - Dec 2015';
+                    });
                 } else {
-                    filteredData = allData.filter(item => item.month === selectedMonth); // Jika tidak, saring data berdasarkan bulan yang dipilih
+                    filteredData = allData.filter(item => item.month === selectedMonth); 
+                    document.querySelectorAll('.text-xs span').forEach(span => {
+                        span.textContent = selectedMonth + ' 2015';
+                    });
                 }
 
-                // Memanggil fungsi untuk menggambar ulang semua grafik dengan data yang disaring
                 Object.keys(chartInstances).forEach(chartId => {
                     drawChart(chartId, filteredData);
                 });
 
-                // Calculate and display total revenue, total orders, and total pizza sold for the selected month
                 const totalRevenue = filteredData.reduce((total, item) => total + parseFloat(item.total_price.replace(',', '.')), 0);
-                const uniqueOrders = new Set(filteredData.map(item => item.order_id)); // Mendapatkan ID pesanan yang unik
-                const totalOrders = uniqueOrders.size; // Menghitung jumlah pesanan yang unik
+                const uniqueOrders = new Set(filteredData.map(item => item.order_id));
+                const totalOrders = uniqueOrders.size; 
                 const totalPizzaSold = filteredData.reduce((total, item) => total + parseInt(item.quantity), 0);
                 
-                // Update HTML elements with calculated values
                 totalRevenueElement.textContent = `$${totalRevenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
                 totalOrdersElement.textContent = totalOrders.toLocaleString();
                 totalPizzasSoldElement.textContent = totalPizzaSold.toLocaleString();
+
             });
 
-            // Display initial totals when page is loaded
             displayTotals(data);
         })
         .catch(error => console.error('Error fetching data:', error));
 
-    // Fungsi untuk menggambar semua grafik berdasarkan data yang diberikan
     function drawAllCharts(data) {
-        // Menggambar grafik "Orders Per Day"
         drawChart('ordersPerDay', data);
-
-        // Menggambar grafik "Pizza Sold By Category"
         drawChart('pizzaSoldByCategory', data);
-
-        // Menggambar grafik "Sales Donut Chart Per Size"
         drawChart('salesDonutChartPerSize', data);
-
-        // Menggambar grafik "Top Pizza By Revenue"
         drawChart('topPizzaByRevenue', data);
-
-        // Menggambar grafik "Bottom Pizza By Revenue"
         drawChart('bottomPizzaByRevenue', data);
     }
 
-    // Fungsi untuk menggambar grafik berdasarkan ID chart dan data yang diberikan
     function drawChart(chartId, data) {
         let chartData = {};
 
-        // Logika pengolahan data untuk setiap chart
         switch (chartId) {
             case 'ordersPerDay':
                 chartData = drawOrdersPerDayChart(data);
@@ -107,30 +93,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
         }
 
-        // Menghapus chart lama jika sudah ada
         if (chartInstances[chartId] !== undefined && chartInstances[chartId] !== null) {
             chartInstances[chartId].destroy();
         }
 
-        // Menggambar chart baru dengan data yang telah diproses
         let ctx = document.getElementById(chartId).getContext('2d');
         chartInstances[chartId] = new Chart(ctx, chartData);
     }
 
-    // Fungsi untuk menampilkan total revenue, total orders, dan total pizza sold
     function displayTotals(data) {
         const totalRevenue = data.reduce((total, item) => total + parseFloat(item.total_price.replace(',', '.')), 0);
-        const uniqueOrders = new Set(data.map(item => item.order_id)); // Mendapatkan ID pesanan yang unik
-        const totalOrders = uniqueOrders.size; // Menghitung jumlah pesanan yang unik
+        const uniqueOrders = new Set(data.map(item => item.order_id)); 
+        const totalOrders = uniqueOrders.size; 
         const totalPizzaSold = data.reduce((total, item) => total + parseInt(item.quantity), 0);
 
-        // Update HTML elements with calculated values
         totalRevenueElement.textContent = `$${totalRevenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
         totalOrdersElement.textContent = totalOrders.toLocaleString();
         totalPizzasSoldElement.textContent = totalPizzaSold.toLocaleString();
     }
 
-    // Fungsi untuk menggambar grafik "Orders Per Day"
     function drawOrdersPerDayChart(data) {
         let ordersPerDay = {};
 
@@ -142,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ordersPerDay[day][item.order_id] = true;
         });
 
-        let daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+        let daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
         let labels = daysOfWeek.map(day => ordersPerDay.hasOwnProperty(day) ? day : '');
         let dataPoints = labels.map(label => label !== '' ? Object.keys(ordersPerDay[label]).length : 0);
@@ -154,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: "Total Orders",
                     data: dataPoints,
-                    backgroundColor: "rgba(78, 115, 223, 0.5)",
+                    backgroundColor: "rgba(78, 115, 223, 1)",
                     borderColor: "rgba(78, 115, 223, 1)",
                     borderWidth: 2,
                 }],
@@ -169,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    // Fungsi untuk menggambar grafik "Pizza Sold By Category"
     function drawPizzaSoldByCategoryChart(data) {
         let pizzaSoldByCategory = {};
 
@@ -191,8 +171,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: "Total Sold",
                     data: chartData,
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
+                    backgroundColor: "#4793AF",
+                    hoverBackgroundColor: "#8B322C",
                     borderWidth: 1,
                 }],
             },
@@ -206,11 +186,9 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    // Fungsi untuk menggambar grafik "Sales Donut Chart Per Size"
     function drawSalesDonutChartPerSize(data) {
         let salesBySize = {};
 
-        // Menghitung total penjualan per ukuran
         data.forEach(function (item) {
             let size = item.size;
             if (!salesBySize[size]) {
@@ -219,13 +197,11 @@ document.addEventListener('DOMContentLoaded', function () {
             salesBySize[size] += parseFloat(item.total_price.replace(',', '.'));
         });
 
-        // Menghitung total penjualan keseluruhan
         let totalSales = Object.values(salesBySize).reduce((a, b) => a + b, 0);
 
-        // Menghitung persentase penjualan per ukuran
         let percentages = {};
         Object.keys(salesBySize).forEach(function (size) {
-            percentages[size] = ((salesBySize[size] / totalSales) * 100).toFixed(2); // Mengubah persentase menjadi string dengan tambahan tanda persen
+            percentages[size] = ((salesBySize[size] / totalSales) * 100).toFixed(2); 
         });
 
         let labels = Object.keys(percentages);
@@ -238,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Sales by Size',
                     data: chartData,
-                    backgroundColor: ['#4e73df', '#ff6b6b', '#ffd166', '#45aaf2', '#50bfa9'],
+                    backgroundColor: ['#4793AF', '#FFC470', '#DD5746', '#45aaf2', '#8B322C'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                     borderWidth: 1
                 }]
@@ -260,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }
                                 let value = context.raw || '';
                                 if (value) {
-                                    label += value + '%'; // Menambahkan persentase ke label tooltip
+                                    label += value + '%'; 
                                 }
                                 return label;
                             }
@@ -272,13 +248,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     animateRotate: true
                 },
                 tooltips: {
-                    enabled: true // Mengaktifkan tooltip
+                    enabled: true 
                 }
             }
         };
     }
 
-    // Fungsi untuk menggambar grafik "Top Pizza By Revenue"
     function drawTopPizzaByRevenueChart(data) {
         let pizzaSales = {};
 
@@ -315,8 +290,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Total Revenue',
                     data: chartData,
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
+                    backgroundColor: "#FFC470",
+                    hoverBackgroundColor: "#DD5746",
                     borderWidth: 1
                 }]
             },
@@ -327,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value, index, values) {
-                                return '$' + value.toLocaleString(); // Tambahkan tanda dollar di sini
+                                return '$' + value.toLocaleString(); 
                             }
                         }
                     }
@@ -342,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }
                                 let value = context.formattedValue || '';
                                 if (value) {
-                                    label += '$' + value.toLocaleString(); // Menambahkan tanda dollar ke label tooltip
+                                    label += '$' + value.toLocaleString(); 
                                 }
                                 return label;
                             }
@@ -353,7 +328,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    // Fungsi untuk menggambar grafik "Bottom Pizza By Revenue"
     function drawBottomPizzaByRevenueChart(data) {
         let pizzaSales = {};
 
@@ -390,8 +364,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Total Revenue',
                     data: chartData,
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
+                    backgroundColor: "#557C55",
+                    hoverBackgroundColor: "#FFA447",
                     borderWidth: 1
                 }]
             },
@@ -402,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value, index, values) {
-                                return '$' + value.toLocaleString(); // Tambahkan tanda dollar di sini
+                                return '$' + value.toLocaleString(); 
                             }
                         }
                     }
@@ -417,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }
                                 let value = context.formattedValue || '';
                                 if (value) {
-                                    label += '$' + value.toLocaleString(); // Menambahkan tanda dollar ke label tooltip
+                                    label += '$' + value.toLocaleString(); 
                                 }
                                 return label;
                             }
@@ -520,7 +494,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Add event listener for search input
     var table = document.getElementById("orderTable").getElementsByTagName('tbody')[0];
     document.getElementById("searchInput").addEventListener("keyup", function() {
         var query = this.value.trim().toLowerCase();
@@ -545,4 +518,3 @@ document.addEventListener("DOMContentLoaded", function() {
       contentWrapper.classList.toggle('collapsed');
     });
   });
-  
