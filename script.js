@@ -191,8 +191,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: "Total Sold",
                     data: chartData,
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
+                    backgroundColor: "#4793AF",
+                    hoverBackgroundColor: "#8B322C",
                     borderWidth: 1,
                 }],
             },
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Sales by Size',
                     data: chartData,
-                    backgroundColor: ['#4e73df', '#ff6b6b', '#ffd166', '#45aaf2', '#50bfa9'],
+                    backgroundColor: ['#4793AF', '#FFC470', '#DD5746', '#45aaf2', '#8B322C'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                     borderWidth: 1
                 }]
@@ -315,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Total Revenue',
                     data: chartData,
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
+                    backgroundColor: "#FFC470",
+                    hoverBackgroundColor: "#DD5746",
                     borderWidth: 1
                 }]
             },
@@ -390,8 +390,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Total Revenue',
                     data: chartData,
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
+                    backgroundColor: "#557C55",
+                    hoverBackgroundColor: "#FFA447",
                     borderWidth: 1
                 }]
             },
