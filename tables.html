@@ -37,18 +37,29 @@
         </li>
       </ul>
     </nav>
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper">
       <div id="content">
-        <div class="container-fluid" id="container-wrapper">
+        <div>
           <div>
             <h1>List Menu</h1>
           </div>
           <div class="row mb-3">
-            <div class="col-sm-2">
+            <div class="col-sm-12">
               <div class="card">
                 <div class="card-body">
-                  <div class="mb-3">
+                  <div class="search-bar">
                     <input type="text" id="searchInput" placeholder="Search...">
+                  </div>
+                  <div class="col-md-6">
+                    <form>
+                      <label for="form-label">Entries per Page:</label>
+                      <select id="itemsPerPageDropdown">
+                        <option class="dropdown-item" href="#">10</option>
+                        <option class="dropdown-item" href="#">25</option>
+                        <option class="dropdown-item" href="#">50</option>
+                        <option class="dropdown-item" href="#">100</option>
+                      </select>
+                    </form>                    
                   </div>
                   <br>
                   <div class="table-responsive">
@@ -56,9 +67,10 @@
                       <thead class="thead-light">
                         <tr>
                           <th>No</th>
-                          <th>Name</th>
-                          <th>Size</th>
-                          <th>Price</th>
+                          <th onclick="sortTable(1)" id="nameHeader">Name <span class="sort-icon">&#9650;&#9660;</span></th>
+                          <th onclick="sortTable(2)" id="sizeHeader">Size <span class="sort-icon">&#9650;&#9660;</span></th>
+                          <th onclick="sortTable(3)" id="priceHeader">Price <span class="sort-icon">&#9650;&#9660;</span></th>
+
                         </tr>
                       </thead>
                       <tbody>
@@ -77,6 +89,22 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <button id="formToggle"><i class="fa fa-envelope"></i></button>
+  <div id="formContainer">
+    <form id="contactForm" action="https://formspree.io/f/xpzvgevy" method="POST">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" required><br>
+      <label for="message">Message:</label><br>
+      <textarea id="message" name="message" required></textarea><br><br>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="custom-alert" id="customAlert">
+    <p id="alertMessage"></p>
+    <button id="closeAlert">OK</button>
   </div>
 
   <footer class="sticky-footer">

@@ -23,11 +23,6 @@ Dashboard ini mencakup grafik-garifik berikut:
 
 - **Search Input**: Pengguna dapat mencari item pizza tertentu menggunakan kolom input pencarian. Tabel akan diperbarui untuk menampilkan item yang sesuai.
 
-## Cara Menggunakan
-
-1. Buka dashboard di peramban web Anda.
-2. Gunakan penyaring bulan untuk memilih bulan tertentu atau biarkan "All" untuk melihat data untuk semua bulan.
-3. Gunakan kolom input pencarian untuk mencari item pizza tertentu.
 
 ## Ketergantungan
 

@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: "Total Orders",
                     data: dataPoints,
-                    backgroundColor: "rgba(78, 115, 223, 1)",
-                    borderColor: "rgba(78, 115, 223, 1)",
+                    backgroundColor: "#DD5746",
+                    borderColor: "#DD5746",
                     borderWidth: 2,
                 }],
             },
@@ -172,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     label: "Total Sold",
                     data: chartData,
                     backgroundColor: "#4793AF",
-                    hoverBackgroundColor: "#8B322C",
                     borderWidth: 1,
                 }],
             },
@@ -214,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Sales by Size',
                     data: chartData,
-                    backgroundColor: ['#4793AF', '#FFC470', '#DD5746', '#45aaf2', '#8B322C'],
+                    backgroundColor: ['#4793AF', '#FFC470', '#DD5746', '#557C55', '#45aaf2', '#8B322C'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                     borderWidth: 1
                 }]
@@ -291,7 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     label: 'Total Revenue',
                     data: chartData,
                     backgroundColor: "#FFC470",
-                    hoverBackgroundColor: "#DD5746",
                     borderWidth: 1
                 }]
             },
@@ -365,7 +363,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     label: 'Total Revenue',
                     data: chartData,
                     backgroundColor: "#557C55",
-                    hoverBackgroundColor: "#FFA447",
                     borderWidth: 1
                 }]
             },
@@ -408,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var itemsPerPage = 10;
     var jsonData;
     var uniqueItems;
-  
+
     function loadData() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'pizza.json', true);
@@ -421,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         xhr.send();
     }
-  
+
     function getUniqueItems(data) {
         var uniqueItems = {};
         data.forEach(function (item) {
@@ -432,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         return Object.values(uniqueItems);
     }
-  
+
     function renderTable(data) {
         data.sort(function (a, b) {
             var nameA = a.name.toUpperCase();
@@ -445,47 +442,64 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             return 0;
         });
-  
+
         var startIndex = (currentPage - 1) * itemsPerPage;
         var endIndex = startIndex + itemsPerPage;
         var tableBody = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = '';
-  
+
         for (var i = startIndex; i < endIndex && i < data.length; i++) {
             var item = data[i];
             var row = tableBody.insertRow();
             row.innerHTML = '<td>' + (i + 1) + '</td><td>' + item.name + '</td><td>' + item.size + '</td><td>$' + item.price + '</td>';
         }
-  
+
         renderPagination(data.length);
     }
-  
+
     function renderPagination(totalItems) {
         var totalPages = Math.ceil(totalItems / itemsPerPage);
         var paginationList = document.querySelectorAll('.pagination')[0];
         paginationList.innerHTML = '';
-  
+
         paginationList.insertAdjacentHTML('beforeend', '<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="prevPage()">Previous</a></li>');
-  
-        for (var i = 1; i <= totalPages; i++) {
+
+        var startPage = Math.max(1, currentPage - 0);
+        var endPage = Math.min(totalPages, currentPage + 0);
+
+        if (startPage > 1) {
+            paginationList.insertAdjacentHTML('beforeend', '<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>');
+            if (startPage > 2) {
+                paginationList.insertAdjacentHTML('beforeend', '<li class="page-item"><span class="page-link">...</span></li>');
+            }
+        }
+
+        for (var i = startPage; i <= endPage; i++) {
             paginationList.insertAdjacentHTML('beforeend', '<li class="page-item ' + (currentPage === i ? 'active' : '') + '"><a class="page-link" href="#" onclick="changePage(' + i + ')">' + i + '</a></li>');
         }
-  
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                paginationList.insertAdjacentHTML('beforeend', '<li class="page-item"><span class="page-link">...</span></li>');
+            }
+            paginationList.insertAdjacentHTML('beforeend', '<li class="page-item"><a class="page-link" href="#" onclick="changePage(' + totalPages + ')">' + totalPages + '</a></li>');
+        }
+
         paginationList.insertAdjacentHTML('beforeend', '<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>');
     }
-  
+
     window.changePage = function (page) {
         currentPage = page;
         renderTable(uniqueItems);
     }
-  
+
     window.prevPage = function () {
         if (currentPage > 1) {
             currentPage--;
             renderTable(uniqueItems);
         }
     }
-  
+
     window.nextPage = function () {
         var totalPages = Math.ceil(uniqueItems.length / itemsPerPage);
         if (currentPage < totalPages) {
@@ -495,18 +509,97 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var table = document.getElementById("orderTable").getElementsByTagName('tbody')[0];
-    document.getElementById("searchInput").addEventListener("keyup", function() {
+    document.getElementById("searchInput").addEventListener("keyup", function () {
         var query = this.value.trim().toLowerCase();
-        var filteredData = jsonData.filter(function(item) {
+        var filteredData = jsonData.filter(function (item) {
             return item.name.toLowerCase().includes(query) || item.size.toLowerCase().includes(query) || item.price.toString().includes(query);
         });
         uniqueItems = getUniqueItems(filteredData);
         currentPage = 1;
         renderTable(uniqueItems);
     });
-  
+
+    function setItemsPerPage(count) {
+        itemsPerPage = count;
+        renderTable(uniqueItems);
+    }
+
+    var dropdown = document.getElementById('itemsPerPageDropdown');
+    dropdown.addEventListener('change', function (event) {
+    var count = parseInt(event.target.value);
+    setItemsPerPage(count);
+});
+
     loadData();
 });
+
+var sortColumn = 0; 
+var sortOrder = 'asc'; 
+
+function sortTable(column) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("orderTable");
+    switching = true;
+    
+    if (sortColumn === column) {
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        sortColumn = column;
+        sortOrder = 'asc';
+    }
+    
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[column];
+            y = rows[i + 1].getElementsByTagName("TD")[column];
+            if (sortOrder === 'asc') {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+    renderSortIcon(column, sortOrder);
+    updateRowNumbers(); 
+}
+
+function updateRowNumbers() {
+    var table = document.getElementById("orderTable");
+    var rows = table.rows;
+    for (var i = 1; i < rows.length; i++) {
+        rows[i].querySelector('td:first-child').textContent = i;
+    }
+}
+
+function renderSortIcon(column, sortOrder) {
+    var headers = document.querySelectorAll('.table th');
+    headers.forEach(header => {
+        var icon = header.querySelector('.sort-icon');
+        if (icon) {
+            icon.parentNode.removeChild(icon);
+        }
+        header.classList.remove('sort-hover');
+    });
+    
+    var icon = sortOrder === 'asc' ? '&#9650;' : '&#9660;';
+    var header = document.getElementById(column === 1 ? 'nameHeader' : (column === 2 ? 'sizeHeader' : 'priceHeader'));
+    header.insertAdjacentHTML('beforeend', '<span class="sort-icon">' + icon + '</span>');
+
+    header.classList.add('sort-hover');
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -518,3 +611,52 @@ document.addEventListener("DOMContentLoaded", function() {
       contentWrapper.classList.toggle('collapsed');
     });
   });
+
+  document.getElementById("formToggle").addEventListener("click", function() {
+    document.getElementById("formContainer").classList.toggle("visible");
+  });
+  
+  document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    let formData = new FormData(this);
+  
+    fetch(this.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        displayAlert("Message sent successfully!", true);
+        document.getElementById("contactForm").reset();
+        document.getElementById("formContainer").classList.remove("visible");
+      } else {
+        displayAlert("Failed to send message. Please try again later.", false);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      displayAlert("Failed to send message. Please try again later.", false);
+    });
+  });
+  
+  function displayAlert(message, isSuccess) {
+    const alertBox = document.getElementById("customAlert");
+    const alertMessage = document.getElementById("alertMessage");
+    const closeButton = document.getElementById("closeAlert");
+  
+    alertBox.style.display = "block";
+    alertMessage.textContent = message;
+  
+    if (isSuccess) {
+      alertBox.style.backgroundColor = "lightblue";
+    } else {
+      alertBox.style.backgroundColor = "lightred";
+    }
+  
+    closeButton.addEventListener("click", function() {
+      alertBox.style.display = "none";
+    });
+  }

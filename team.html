@@ -37,11 +37,11 @@
         </li>
       </ul>
     </nav>
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper">
       <div id="content">
-        <div class="container-fluid" id="container-wrapper">
+        <div>
           <div>
-            <h1>Team</h1>
+            <h1>Team 21 - Section Jakarta</h1>
           </div>
           <br>
           <div class="row mb-3">
@@ -80,7 +80,7 @@
             </div>
               <div class="col-sm-3">
                   <div class="card-team">
-                    <img src="img/icon.png" width="150" height="150" alt="Logo">
+                    <img src="img/naely.png" width="150" height="150" alt="Logo">
                     <div class="card-body">
                       <strong>Naely Dwi Handayan</strong>
                       <div class="text-xs">
@@ -113,7 +113,7 @@
               </div>
               <div class="col-sm-3">
                   <div class="card-team">
-                    <img src="img/icon.png" width="150" height="150" alt="Logo">
+                    <img src="img/sheil.png" width="150" height="150" alt="Logo">
                     <div class="card-body">
                       <strong>Sheilla Amanda Sulistyo</strong>
                       <div class="text-xs">
@@ -172,13 +172,29 @@
     </div>
   </div>
 
-    <footer class="sticky-footer">
-      <div class="container">
-        <div class="text-center">
-          <span>Developed by <b>Team 23 Jakarta</b></span>
-        </div>
+  <button id="formToggle"><i class="fa fa-envelope"></i></button>
+  <div id="formContainer">
+    <form id="contactForm" action="https://formspree.io/f/xpzvgevy" method="POST">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" required><br>
+      <label for="message">Message:</label><br>
+      <textarea id="message" name="message" required></textarea><br><br>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="custom-alert" id="customAlert">
+    <p id="alertMessage"></p>
+    <button id="closeAlert">OK</button>
+  </div>
+
+  <footer class="sticky-footer">
+    <div class="container">
+      <div class="text-center">
+        <span>Developed by <b>Team 23 Jakarta</b></span>
       </div>
-    </footer>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
