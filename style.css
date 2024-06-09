@@ -104,8 +104,14 @@ body {
 }
 
 .icon-wrapper {
-  margin-left: 125px;
   margin-top: 20px;
+  display: flex;
+  justify-content: right;
+  width: 50%;
+}
+
+.icon-wrapper i {
+  font-size: 2em;
 }
 
 .card,
@@ -319,18 +325,61 @@ body {
 }
 
 .col-md-6 {
-  width: 50%;
-  margin-left: 180px;
+  float: left;
+  width: 100%;
 }
 
 @media only screen and (max-width: 768px) {
   .col-md-6 {
-      float: none;
+      float: left;
       width: 50%;
   }
 
   .search-bar {
-    float: none;
+    float: right;
+  }
+
+  #contactForm {
+    padding: 0 10px; 
+    font-size: 12px;
+  }
+
+  input[type="text"],
+  textarea {
+  font-size: 10px;
+  }
+
+  button[type="submit"] {
+    font-size: 12px;
+  }
+
+  .custom-alert {
+    width: 80%; 
+    max-width: 300px; 
+    height: auto;
+  }
+
+  .table-responsive {
+    width: 100%;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .pagination .page-item .page-link {
+    padding: 2px 6px;
+    font-size: 12px;
   }
 }
 
@@ -362,8 +411,7 @@ body {
 }
 
 .search-bar {
-  float: left;
-  margin-bottom: 20px;
+  float: right;
   width: 20%;
 }
 
@@ -381,11 +429,11 @@ body {
 
 #searchInput:focus {
   outline: 0;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #E9C874;
+  box-shadow: 0 0 0 0.2rem rgba(233, 200, 116, 0.25);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .sidebar {
     width: 100%;
     height: auto;
@@ -426,7 +474,7 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #A34343;
+  background-color: #B34343;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -434,6 +482,10 @@ body {
   height: 50px;
   font-size: 24px;
   cursor: pointer;
+}
+
+#formToggle:hover {
+  background-color: #A62626;
 }
 
 #formContainer {
@@ -453,15 +505,108 @@ body {
   display: block;
 }
 
+.container-about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.about {
+  margin: 20px;
+}
+
+.responsive-video {
+  width: 50%;
+  height: auto;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .button-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .responsive-video {
+    width: 80%;
+    height: auto;
+  }
+}
+
+#contactForm {
+  width: 100%;
+  max-width: 400px; 
+  margin: 0 auto;
+}
+
+#formContainer label {
+  font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: 0;
+  border-color: #4793AF;
+  box-shadow: 0 0 0 0.2rem rgba(58, 125, 157, 0.25);
+}
+
+button[type="submit"] {
+  background-color: #4793AF;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+}
+
+button[type="submit"]:hover {
+  background-color: #3a7d9d;
+}
+
 .custom-alert {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
   padding: 20px;
-  border: 1px solid black;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 9999;
+  margin-top: 20px;
+  border-radius: 4px;
+  height: 100px;
+}
+
+#customAlert #closeAlert {
+  float: right;  
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#alertMessage {
+  margin: 0 auto;
+}
+
+.alert-success {
+  background-color:#557C55;
+}
+
+.alert-failed {
+  background-color:#DD5746;
 }

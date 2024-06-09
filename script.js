@@ -610,53 +610,54 @@ document.addEventListener("DOMContentLoaded", function() {
       sidebar.classList.toggle('collapsed');
       contentWrapper.classList.toggle('collapsed');
     });
-  });
-
-  document.getElementById("formToggle").addEventListener("click", function() {
-    document.getElementById("formContainer").classList.toggle("visible");
-  });
   
-  document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    let formData = new FormData(this);
-  
-    fetch(this.action, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        displayAlert("Message sent successfully!", true);
-        document.getElementById("contactForm").reset();
-        document.getElementById("formContainer").classList.remove("visible");
-      } else {
-        displayAlert("Failed to send message. Please try again later.", false);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      displayAlert("Failed to send message. Please try again later.", false);
+    document.getElementById("formToggle").addEventListener("click", function() {
+      document.getElementById("formContainer").classList.toggle("visible");
     });
-  });
   
-  function displayAlert(message, isSuccess) {
-    const alertBox = document.getElementById("customAlert");
-    const alertMessage = document.getElementById("alertMessage");
-    const closeButton = document.getElementById("closeAlert");
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      let formData = new FormData(this);
   
-    alertBox.style.display = "block";
-    alertMessage.textContent = message;
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          displayAlert("Message sent successfully!", true);
+          document.getElementById("contactForm").reset();
+          document.getElementById("formContainer").classList.remove("visible");
+        } else {
+          displayAlert("Failed to send message. Please try again later.", false);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        displayAlert("Failed to send message. Please try again later.", false);
+      });
+    });
   
-    if (isSuccess) {
-      alertBox.style.backgroundColor = "lightblue";
-    } else {
-      alertBox.style.backgroundColor = "lightred";
+    function displayAlert(message, isSuccess) {
+      const alertBox = document.getElementById("customAlert");
+      const alertMessage = document.getElementById("alertMessage");
+  
+      alertBox.style.display = "block";
+      alertMessage.textContent = message;
+  
+      if (isSuccess) {
+        alertBox.classList.add("alert-success");
+        alertBox.classList.remove("alert-failed");
+      } else {
+        alertBox.classList.add("alert-failed");
+        alertBox.classList.remove("alert-success");
+      }
     }
   
-    closeButton.addEventListener("click", function() {
-      alertBox.style.display = "none";
+    document.getElementById("closeAlert").addEventListener("click", function() {
+      document.getElementById("customAlert").style.display = "none";
     });
-  }
+  });
