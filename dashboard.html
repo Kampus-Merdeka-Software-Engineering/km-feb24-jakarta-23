@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="img/logo.png">
+  <title>Pizza Place Sales - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="wrapper">
+    <nav class="sidebar">
+      <div class="sidebar-brand">
+        <img src="img/logo.png" width="50" height="50" alt="Logo">
+        <a href="index.html" class="sidebar-brand-text">Pizza Sales</a>
+        <button id="sidebarToggle" class="btn"><i class="fa fa-bars"></i></button>
+      </div>  
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">
+            <i class="fa fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="dashboard.html">
+            <i class="fa fa-pie-chart"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="tables.html">
+            <i class="fa fa-table"></i>
+            <span>Tables</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="team.html">
+            <i class="fa fa-users"></i>
+            <span>Team</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div id="content-wrapper">
+      <div id="content">
+        <div>
+          <div>
+            <h1>Dashboard</h1>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="monthFilter" class="form-label">Filter by Month:</label>
+              <select class="form-select" id="monthFilter"></select>
+            </div>
+          </div>
+          <br>
+          <div class="row mb-3">
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-title">
+                  <div>
+                    <strong>Total Revenue</strong>
+                    <div class="font-weight-bold" id="totalRevenue"></div>
+                    <div class="text-xs">
+                      <span>Jan - Dec 2015</span>
+                    </div>
+                  </div>
+                  <div class="icon-wrapper">
+                    <i class="fa fa-money fa-2x"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-title">
+                  <div>
+                    <strong>Total Orders</strong>
+                    <div class="font-weight-bold" id="totalOrders"></div>
+                    <div class="text-xs">
+                      <span>Jan - Dec 2015</span>
+                    </div>
+                  </div>
+                  <div class="icon-wrapper">
+                    <i class="fa fa-users fa-2x"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-title">
+                  <div>
+                    <strong>Total Sold</strong>
+                    <div class="font-weight-bold" id="totalPizzasSold"></div>
+                    <div class="text-xs">
+                      <span>Jan - Dec 2015</span>
+                    </div>
+                  </div>
+                  <div class="icon-wrapper">
+                    <i class="fa fa-shopping-cart fa-2x"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-8">
+              <div class="chart-container" id="chart1">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="font-weight-bold">Daily Trends for Total Orders</h6>
+                    <canvas id="ordersPerDay" height="120"></canvas>
+                    <button class="flip-btn fa fa-exchange" onclick="flipChart('chart1', 'insightChart1')"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="insight-container" id="insightChart1">
+                <div class="card">
+                  <div class="card-body">
+                    <h4>Insight</h4>
+                    <p>The line graph displaying the total number of orders each day over a week suggests a noticeable spike in sales on Fridays, indicating a potential opportunity to maximize revenue on this particular day.</p><br>
+                    <h4>Recommendation</h4>
+                    <p>To maximize sales, focus on boosting promotions and staffing during peak days, particularly Fridays, by offering special deals, ensuring sufficient inventory, enhancing operational efficiency, and establishing partnerships to accommodate the high activity levels.</p><br>
+                    <button class="flip-btn fa fa-exchange" onclick="flipInsight('chart1', 'insightChart1')"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="chart-container" id="chart2">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="font-weight-bold">Total Pizza Sold by Category</h6>
+                    <canvas id="pizzaSoldByCategory" height="275"></canvas>
+                    <button class="flip-btn fa fa-exchange" onclick="flipChart('chart2', 'insightChart2')"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="insight-container" id="insightChart2">
+                <div class="card">
+                  <div class="card-body">
+                    <h4>Insight</h4>
+                    <p>The bar graph shows varying popularity levels among different pizza types.</p><br>
+                    <h4>Recommendation</h4>
+                    <p>Create bundled packages combining best-selling categories with less popular ones to encourage exploration of a wider range of options and optimize sales.</p>
+                    <button class="flip-btn fa fa-exchange" onclick="flipInsight('chart2', 'insightChart2')"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-3">
+              <div class="chart-container" id="chart3">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="font-weight-bold">Sales Performance by Size</h6>
+                    <canvas id="salesDonutChartPerSize" height="100"></canvas>
+                    <button class="flip-btn fa fa-exchange" onclick="flipChart('chart3', 'insightChart3')"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="insight-container" id="insightChart3">
+                <div class="card">
+                  <div class="card-body">
+                    <h4>Insight</h4>
+                    <p>The donut chart representing sales distribution based on pizza size highlights a preference for extra-large (XL) and double-extra-large (XXL) pizzas.</p><br>
+                    <h4>Recommendation</h4>
+                    <p>Offering discounts or promotions specifically tailored to these sizes can effectively boost sales and encourage upselling.</p>
+                    <button class="flip-btn fa fa-exchange" onclick="flipInsight('chart3', 'insightChart3')"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="chart-container" id="chart4">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="font-weight-bold">Best Seller by Revenue</h6>
+                    <canvas id="topPizzaByRevenue" height="300"></canvas>
+                    <button class="flip-btn fa fa-exchange" onclick="flipChart('chart4', 'insightChart4')"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="insight-container" id="insightChart4">
+                <div class="card">
+                  <div class="card-body">
+                    <h4>Insight</h4>
+                    <p>The bar graph showcasing the top 5 pizzas based on revenue demonstrates which menu items contribute the most to overall income.</p><br>
+                    <h4>Recommendation</h4>
+                    <p>To capitalize on this insight, focus efforts on increasing the availability or promotion of these top-selling pizzas to maximize revenue potential further.</p><br>
+                    <button class="flip-btn fa fa-exchange" onclick="flipInsight('chart4', 'insightChart4')"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="chart-container" id="chart5">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="font-weight-bold">Worst Seller by Revenue</h6>
+                    <canvas id="bottomPizzaByRevenue" height="300"></canvas>
+                    <button class="flip-btn fa fa-exchange" onclick="flipChart('chart5', 'insightChart5')"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="insight-container" id="insightChart5">
+                <div class="card">
+                  <div class="card-body">
+                    <h4>Insight</h4>
+                    <p>The bar graph displaying the bottom 5 pizzas by revenue identifies areas for improvement.</p><br>
+                    <h4>Recommendation</h4>
+                    <p>Implementing varied promotional strategies and introducing offers such as "buy one, get one free" can stimulate interest and incentivize customers to try these less popular options.</p>
+                    <button class="flip-btn fa fa-exchange" onclick="flipInsight('chart5', 'insightChart5')"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="formToggle"><i class="fa fa-envelope"></i></button>
+  <div id="formContainer">
+    <form id="contactForm" action="https://formspree.io/f/xpzvgevy" method="POST">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" required><br>
+      <label for="message">Message:</label><br>
+      <textarea id="message" name="message" required></textarea><br>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="custom-alert" id="customAlert">
+    <p id="alertMessage"></p>
+    <button id="closeAlert">OK</button>
+  </div>
+
+  <footer class="sticky-footer">
+    <div class="container">
+      <div class="text-center">
+        <span>Developed by <b>Team 23 Jakarta</b></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

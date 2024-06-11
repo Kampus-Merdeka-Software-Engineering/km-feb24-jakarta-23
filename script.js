@@ -661,3 +661,21 @@ document.addEventListener("DOMContentLoaded", function() {
       document.getElementById("customAlert").style.display = "none";
     });
   });
+
+  function flipChart(chartId, insightId) {
+    var chartContainer = document.getElementById(chartId);
+    var chartCanvas = chartContainer;
+    var insightContainer = document.getElementById(insightId);
+
+    chartCanvas.style.display = 'none';
+    insightContainer.style.display = 'block';
+}
+
+  function flipInsight(chartId, insightId) {
+    var chartContainer = document.getElementById(chartId);
+    var chartCanvas = chartContainer;
+    var insightContainer = document.getElementById(insightId);
+
+    chartCanvas.style.display = 'block';
+    insightContainer.style.display = 'none';
+}

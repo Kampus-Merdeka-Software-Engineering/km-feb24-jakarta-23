@@ -20,6 +20,12 @@
         <li class="nav-item active">
           <a class="nav-link" href="index.html">
             <i class="fa fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="dashboard.html">
+            <i class="fa fa-pie-chart"></i>
             <span>Dashboard</span>
           </a>
         </li>
@@ -38,114 +44,34 @@
       </ul>
     </nav>
     <div id="content-wrapper">
-      <div id="content">
-        <div>
-          <div>
-            <h1>Dashboard</h1>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <label for="monthFilter" class="form-label">Filter by Month:</label>
-              <select class="form-select" id="monthFilter"></select>
-            </div>
+        <div class="container-about">            
+          <h1>Pizza Sales Dashboard</h1>      
+            <video autoplay loop class="responsive-video">
+              <source src="img/team.mp4" type="video/mp4">
+            </video>
+          <section class="about">
+            <h2>About The Dashboard</h2>
+            <p>
+              A pizza sales dashboard was created to provide information related to pizza sales during 2015.
+            </p>
+            <p>
+              This dashboard makes it easy to monitor sales, analyze trends, and make actionable recommendations to increase sales.
+            </p>
+          </section>
+          <div class="button-wrapper">
+            <a href="https://lookerstudio.google.com/reporting/e78d89dd-6ef2-4f9e-a20e-d308c19621db" target="_blank" class="button">Looker Studio</a>
+            <a href="https://docs.google.com/spreadsheets/d/13yrexwhOPyoJgK8f7Y0OIHd0Mgr9AWKDYVSpiA1tN3k/edit?usp=sharing" target="_blank" class="button">Spreadsheet</a>
+            <a href="https://console.cloud.google.com/bigquery?sq=736472082138:b425880a82344203b2e43c72005dc2cb" target="_blank" class="button">BigQuery</a>
+            <a href="https://mavenanalytics.io/data-playground" target="_blank" class="button">Dataset Maven</a>
           </div>
           <br>
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <div class="card">
-                <div class="card-title">
-                  <div>
-                    <strong>Total Revenue</strong>
-                    <div class="font-weight-bold" id="totalRevenue"></div>
-                    <div class="text-xs">
-                      <span>Jan - Dec 2015</span>
-                    </div>
-                  </div>
-                  <div class="icon-wrapper">
-                    <i class="fa fa-money fa-2x"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="card">
-                <div class="card-title">
-                  <div>
-                    <strong>Total Orders</strong>
-                    <div class="font-weight-bold" id="totalOrders"></div>
-                    <div class="text-xs">
-                      <span>Jan - Dec 2015</span>
-                    </div>
-                  </div>
-                  <div class="icon-wrapper">
-                    <i class="fa fa-users fa-2x"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="card">
-                <div class="card-title">
-                  <div>
-                    <strong>Total Sold</strong>
-                    <div class="font-weight-bold" id="totalPizzasSold"></div>
-                    <div class="text-xs">
-                      <span>Jan - Dec 2015</span>
-                    </div>
-                  </div>
-                  <div class="icon-wrapper">
-                    <i class="fa fa-shopping-cart fa-2x"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-sm-8">
-              <div class="card">
-                <div class="card-body">
-                  <h6 class="font-weight-bold">Daily Trends for Total Orders</h6>
-                  <canvas id="ordersPerDay" height="120"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="card">
-                <div class="card-body">
-                  <h6 class="font-weight-bold">Total Pizza Sold by Category</h6>
-                  <canvas id="pizzaSoldByCategory" height="275"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <div class="card">
-                <div class="card-body">
-                  <h6 class="font-weight-bold">Sales Performance by Size</h6>
-                  <canvas id="salesDonutChartPerSize" height="100"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="card">
-                <div class="card-body">
-                  <h6 class="font-weight-bold">Best Seller by Revenue</h6>
-                  <canvas id="topPizzaByRevenue" height="300"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="card">
-                <div class="card-body">
-                  <h6 class="font-weight-bold">Worst Seller by Revenue</h6>
-                  <canvas id="bottomPizzaByRevenue" height="300"></canvas>
-                </div>
-              </div>
-            </div>
+          <h2>Technology Used</h2>
+          <div>
+            <img src="img/html.png" alt="HTML" style="max-width: 100px;">
+            <img src="img/css.png" alt="CSS" style="max-width: 100px;">
+            <img src="img/js.png" alt="Js" style="max-width: 100px;">
           </div>
         </div>
-      </div>
     </div>
   </div>
 
@@ -166,10 +92,8 @@
   </div>
 
   <footer class="sticky-footer">
-    <div class="container">
-      <div class="text-center">
-        <span>Developed by <b>Team 23 Jakarta</b></span>
-      </div>
+    <div class="text-center">
+      <span>Developed by <b>Team 23 Jakarta</b></span>
     </div>
   </footer>
 
